@@ -1259,3 +1259,325 @@ body {
         content: 'STEP ';
     }
 }
+
+/* =========================================
+   INTERFACCIA GRAFICA CHAT SEMANTICA & CONFRONTI
+   ========================================= */
+
+/* Contenitore principale del flusso di chat */
+.chat-container {
+    max-width: 950px;
+    margin: 0 auto 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Regole base per le bolle della conversazione */
+.chat-bubble {
+    padding: 25px;
+    line-height: 1.5;
+    font-size: 1.15rem;
+    position: relative;
+    box-sizing: border-box;
+    text-align: justify;
+    word-spacing: -1px;
+}
+
+/* Bolla Utente (Domanda) */
+.chat-bubble.user {
+    background-color: #f4f4f4;
+    color: #000000;
+    align-self: flex-start;
+    width: 85%;
+    border-left: 3px solid #666;
+}
+
+/* Bolla Intelligenza Artificiale (Risposta) */
+.chat-bubble.ai {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #eaeaea;
+    width: 100%;
+    margin-top: 5px;
+}
+
+/* Metadati della chat (In alto a sinistra di ogni messaggio) */
+.chat-meta {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #888888;
+    margin-bottom: 12px;
+}
+
+/* Box per gli screenshot/placeholder grafici */
+.chat-media-box {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.screen-placeholder {
+    background-color: #fcfcfc;
+    border: 1px dashed #cccccc;
+    color: #555555;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 15px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* Bottone minimale interattivo per il confronto avanzato */
+.toggle-comparison-btn {
+    margin-top: 25px;
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #000000;
+    padding: 12px 24px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.toggle-comparison-btn:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Pannello del Confronto avanzato (Inizialmente nascosto) */
+.comparison-panel {
+    display: none; /* Gestito via Javascript */
+    width: 100%;
+    background-color: #fafafa;
+    border: 1px solid #000000;
+    padding: 30px;
+    box-sizing: border-box;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+.comparison-split {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.comp-box {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.comp-box h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Lato del codice nel confronto split-view */
+.comp-box.code-side pre {
+    background-color: #111111;
+    color: #00ff66;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px;
+    margin: 0 0 15px 0;
+    font-size: 0.9rem;
+    overflow-x: auto;
+    line-height: 1.4;
+}
+
+.font-small {
+    font-size: 1.05rem !important;
+    line-height: 1.5 !important;
+}
+
+/* Responsive per la visualizzazione chat e split-view */
+@media (max-width: 768px) {
+    .chat-bubble.user {
+        width: 100%;
+    }
+    .comparison-split {
+        flex-direction: column;
+        gap: 25px;
+    }
+    .comp-box {
+        width: 100%;
+    }
+}
+
+/* =========================================
+   INTERFACCIA GRAFICA CHAT SEMANTICA & TAB
+   ========================================= */
+
+.chat-container {
+    max-width: 950px;
+    margin: 0 auto 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.chat-bubble {
+    padding: 25px;
+    line-height: 1.5;
+    font-size: 1.15rem;
+    position: relative;
+    box-sizing: border-box;
+    text-align: justify;
+    word-spacing: -1px;
+}
+
+.chat-bubble.user {
+    background-color: #f4f4f4;
+    color: #000000;
+    align-self: flex-start;
+    width: 85%;
+    border-left: 3px solid #666;
+}
+
+.chat-bubble.ai {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #eaeaea;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.chat-bubble.ai pre {
+    background-color: #111;
+    color: #00ff66;
+    padding: 15px;
+    overflow-x: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    margin-top: 15px;
+}
+
+.chat-bubble.ai code {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #f4f4f4;
+    padding: 2px 6px;
+    font-size: 0.95rem;
+    color: #c7254e;
+}
+
+.chat-meta {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #888888;
+    margin-bottom: 12px;
+}
+
+/* BOX DELLE CORNICI PER LE FOTO FISICHE */
+.chat-media-box {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.screen-placeholder {
+    background-color: #fbfbfb;
+    border: 1px dashed #bbbbbb;
+    color: #444444;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    padding: 25px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* INTERRUTTORI DI SCAMBIO DEL MODELLO (TABS) */
+.chat-toggle-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 2px solid #000;
+    margin-bottom: 10px;
+    gap: 5px;
+}
+
+.chat-toggle-btn {
+    background-color: transparent;
+    border: none;
+    padding: 12px 24px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #999999;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    margin-bottom: -2px;
+    border-bottom: 2px solid transparent;
+}
+
+.chat-toggle-btn:hover {
+    color: #000000;
+}
+
+.chat-toggle-btn.active {
+    color: #000000;
+    border-bottom: 2px solid #000000;
+}
+
+/* Gestione degli Stati di Visualizzazione */
+.chat-view-group {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.chat-view-group.active-view {
+    display: flex;
+}
+
+.font-small {
+    font-size: 1.05rem !important;
+    line-height: 1.5 !important;
+}
+
+@media (max-width: 768px) {
+    .chat-bubble.user {
+        width: 100%;
+    }
+    .chat-toggle-wrapper {
+        flex-direction: column;
+        border-bottom: none;
+    }
+    .chat-toggle-btn {
+        width: 100%;
+        text-align: left;
+        padding: 10px 5px;
+        border-bottom: 1px solid #eee;
+    }
+    .chat-toggle-btn.active {
+        border-bottom: 1px solid #000;
+    }
+}
+
+/* Stile per gli screenshot reali inseriti nella chat */
+.chat-screenshot {
+    width: 100%; /* Si allarga fino a riempire la bolla del messaggio */
+    height: auto; /* Mantiene le proporzioni originali della foto */
+    border: 1px solid #eaeaea; /* Un bordino sottile ed elegante */
+    border-radius: 4px; /* Arrotonda appena gli spigoli per integrarsi con l'interfaccia */
+    display: block;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Leggerissima ombra per farla staccare dal fondo bianco */
+}

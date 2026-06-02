@@ -331,3 +331,62 @@ WHERE {
         });
     });
 });
+
+// --- SCRIPT PER L'APERTURA INTERATTIVA DEI PANNELLI DI CONFRONTO LLM ---
+document.addEventListener('DOMContentLoaded', () => {
+    const comparisonButtons = document.querySelectorAll('.toggle-comparison-btn');
+
+    comparisonButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetId = btn.getAttribute('data-target');
+            const panel = document.getElementById(targetId);
+
+            if (panel) {
+                // Se il pannello è nascosto, lo mostriamo; altrimenti lo nascondiamo
+                if (panel.style.display === 'block') {
+                    panel.style.display = 'none';
+                    btn.textContent = 'MOSTRA CONFRONTO CHATGPT VS GEMINI ⇆';
+                    btn.style.backgroundColor = '#000000';
+                    btn.style.color = '#ffffff';
+                } else {
+                    panel.style.display = 'block';
+                    btn.textContent = 'NASCONDI CONFRONTO INTERNO ✕';
+                    btn.style.backgroundColor = '#ffffff';
+                    btn.style.color = '#000000';
+                }
+            }
+        });
+    });
+});
+
+// --- SCRIPT PER I TAB DEI CONFRONTI LLM (GEMINI VS CHATGPT) ---
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleButtons = document.querySelectorAll('.chat-toggle-btn');
+
+    toggleButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Ottiene l'identificativo del gruppo (es. "q2")
+            const groupName = btn.getAttribute('data-group');
+            const targetId = btn.getAttribute('data-target');
+
+            // 1. Deseleziona tutti i bottoni di questo gruppo e attiva quello cliccato
+            const groupButtons = document.querySelectorAll(`.chat-toggle-btn[data-group="${groupName}"]`);
+            groupButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // 2. Nasconde tutte le chat (view) di questo gruppo
+            const groupViews = document.querySelectorAll(`.chat-view-group.${groupName}`);
+            groupViews.forEach(view => {
+                view.classList.remove('active-view');
+                view.style.display = 'none';
+            });
+
+            // 3. Mostra solo la chat selezionata
+            const activeView = document.getElementById(targetId);
+            if (activeView) {
+                activeView.classList.add('active-view');
+                activeView.style.display = 'flex';
+            }
+        });
+    });
+});

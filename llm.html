@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Interazione e Confronti - Barry Lyndon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <button id="menu-toggle" class="menu-btn" aria-label="Apri Menu">
+            <div class="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+            <span class="menu-text">MENÙ</span>
+        </button>
+    </header>
+
+    <div id="side-menu" class="side-nav">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="il-progetto.html">Il Progetto</a></li>
+                <li><a href="metodologia.html">Metodologia</a></li>
+                <li><a href="estrazione.html">Estrazione dati con SPARQL</a></li>
+                <li><a href="lacune.html">Individuazione Lacune</a></li>
+                <li><a href="migliorie.html">Migliorie Proposte</a></li>
+                <li><a href="llm.html">LLM - Prompt e Confronti</a></li>
+                <li><a href="conclusioni.html">Sfide Affrontate</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="menu-overlay" class="overlay"></div>
+
+    <main class="editorial-page">
+        
+        <div class="title-banner fade-on-scroll">
+            <img src="img/sfondo6.jpg" class="banner-img" alt="Interazione LLM">
+            <div class="banner-overlay">
+                <span class="label banner-label">CAPITOLO 06</span>
+                <h1 class="banner-title">Prompt & LLM Analysis</h1>
+            </div>
+        </div>
+
+        <div class="notes-wrapper">
+            
+            <div class="notes-text-center fade-on-scroll">
+                <span class="label" style="text-align: center; display: block; margin-bottom: 20px;">INTERAZIONE CON I MODELLI GUIDA</span>
+                <p class="synopsis-text lead-text justified-intro">
+                    L’intero sviluppo di questo progetto — dalla raccolta delle informazioni storiche fino alla scrittura del codice e alla programmazione del portale web — è stato supportato dall'interazione con i Large Language Models (LLM). L'Intelligenza Artificiale è stata guidata attivamente applicando tre specifiche tecniche di Prompt Engineering:
+                </p>
+                <p class="synopsis-text">
+                    <strong>Zero-shot Prompting:</strong> per il recupero diretto di dati storici, metadati standard e query SPARQL di base.<br><br>
+                    <strong>Few-shot Prompting:</strong> per forzare i modelli a generare codice (sintassi Turtle o mapping VALUES) seguendo un esempio strutturale da noi fornito.<br><br>
+                    <strong>Chain of Thought (CoT):</strong> applicato nei passaggi più critici per costringere il modello a scomporre problemi logici complessi (ottimizzazione di query pesanti ed estensioni TBox) in step sequenziali.
+                </p>
+                <div style="background-color: #fcfcfc; border-left: 2px solid #000; padding: 20px; text-align: left; margin: 30px auto 0 auto; max-width: 900px;">
+                    <p class="synopsis-text" style="font-size: 1.1rem; margin-bottom: 0;">
+                        <strong>Nota di consultazione:</strong> Per ragioni di spazio e leggibilità, la selezione riportata in questa pagina non include il 100% dei messaggi scambiati (test intermedi, correzioni di refusi, ecc.), ma raccoglie i 15 prompt chiave che rappresentano la spina dorsale logica e cronologica del progetto.
+                    </p>
+                </div>
+            </div>
+
+            <hr class="divider">
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">COERENZA SCIENTIFICA</span>
+                    <h2 class="notes-heading">Il Confronto: ChatGPT vs Gemini</h2>
+                    <p class="synopsis-text">
+                        Ogni prompt strategico è stato sottoposto in parallelo a ChatGPT e Gemini. Questo approccio comparativo ha risposto a due obiettivi fondamentali:
+                    </p>
+                    <p class="synopsis-text">
+                        <strong>Validazione storiografica (Cross-checking):</strong> Intersecare le risposte dei due modelli con fonti terze autorevoli (IMDb, cataloghi museali) per identificare e scartare "allucinazioni" o dati storici errati.<br><br>
+                        <strong>Verifica della competenza semantica:</strong> Analizzare criticamente come i due software interpretano le regole del Web Semantico, la formattazione dei grafi RDF generati con CONSTRUCT e la gestione dello scope delle variabili.
+                    </p>
+                </div>
+            </div>
+
+            <hr class="divider">
+            <div class="notes-text-center fade-on-scroll" style="margin-bottom: 40px;">
+                <span class="label">PROMPT ENGINE &bull; SEZIONE 01</span>
+                <h2 class="notes-heading" style="text-align: center;">Fase 1: Ideazione, Esplorazione e Audit del Grafo Esistente</h2>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-bubble user">
+                    <span class="chat-meta">PROMPT 1 &bull; MODEL: GEMINI &bull; TECNICA: CHAIN OF THOUGHT</span>
+                    <strong>Domanda:</strong> Vorremmo realizzare un progetto di arricchimento semantico su Wikidata riguardante il film "Barry Lyndon". Ragiona passo dopo passo su quali aspetti potremmo lavorare per migliorare il suo Knowledge Graph, considerando la sua importanza tecnica e artistica e proponimi alcune query da eseguire sull'endpoint sparql di wikidata.
+                </div>
+                <div class="chat-bubble ai gemini">
+                    <span class="chat-meta">RISPOSTA TRAMITE CAPACITÀ DI RAGIONAMENTO ASTRETTO</span>
+                    Analizzando preliminarmente l'hub di Linked Data, notiamo che il film è descritto molto bene dal punto di vista industriale (cast, budget, data di uscita). Tuttavia, considerando la natura dell'opera, si nota un profondo divario informativo (gap semantico) riguardo al suo reale patrimonio artistico e tecnologico. Il progetto può quindi concentrarsi su tre macro-aree non documentate: l'estensione della colonna sonora (che attualmente è frammentata), l'identificazione dei quadri settecenteschi che hanno ispirato la fotografia, e la documentazione delle speciali lenti ottiche utilizzate per le riprese. Per analizzare questo possiamo passare ad una prima esplorazione generale:
+                    <div class="chat-media-box">
+                        <img src="llm/foto1.PNG" alt="Screenshot Prompt 1" class="chat-screenshot">
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-toggle-wrapper">
+                    <button class="chat-toggle-btn active" data-target="group-q2-gemini" data-group="g2">VISUALIZZA TRACCIATO GEMINI (PROMPT 2)</button>
+                    <button class="chat-toggle-btn" data-target="group-q2-chatgpt" data-group="g2">VISUALIZZA TRACCIATO CHATGPT (QUERY 1)</button>
+                </div>
+
+                <div id="group-q2-gemini" class="chat-view-group g2 active-view">
+                    <div class="chat-bubble user">
+                        <span class="chat-meta">PROMPT 2 &bull; MODEL: GEMINI &bull; TECNICA: ZERO-SHOT</span>
+                        <strong>Domanda:</strong> Scrivi una query SPARQL per trovare il codice identificativo del film usando una ricerca testuale, e poi spiegami come ottimizzarla per estrarre direttamente regista e data di uscita senza rallentare il server.
+                    </div>
+                    <div class="chat-bubble ai gemini">
+                        <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                        Inizialmente, puoi cercare il film usando <code>?film wdt:P31 wd:Q11424</code> (che significa "l'entità è un film") e usare un <code>FILTER(REGEX(?label, "Barry Lyndon", "i"))</code> per filtrare l'etichetta. Questo rivela che l'ID del film è wd:Q471716.<br><br>
+                        Per ottimizzare e non scansionare miliardi di triple, usiamo la funzione Binto: scrivendo <code>BIND(wd:Q471716 AS ?film)</code>, assegniamo in modo statico e istantaneo l'ID noto alla variabile ?film. Da qui, usiamo blocchi OPTIONAL per estrarre in modo sicuro il regista (wdt:P57) e la data (wdt:P577), applicando <code>FILTER(LANG(?label) = "en")</code> per rimuovere i duplicati delle varie lingue.
+                        <div class="chat-media-box">
+                            <img src="llm/foto2.PNG" alt="Screenshot Prompt 1" class="chat-screenshot">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="group-q2-chatgpt" class="chat-view-group g2" style="display: none;">
+                    <div class="chat-bubble user">
+                        <span class="chat-meta">QUERY 1 &bull; MODEL: CHATGPT &bull; TECNICA: CHAIN OF THOUGHT</span>
+                        <strong>Prompt in stile Chain of Thought per ChatGPT:</strong><br><br>
+                        Contesto: stai costruendo un grafo su Wikidata relativo al film Barry Lyndon. In una prima versione hai provato a identificare il film usando FILTER(REGEX(?label, "Barry Lyndon", "i")) e un filtro sulla lingua per recuperare etichette in inglese. Tuttavia questa tecnica è inefficiente perché costringe l’endpoint a scansionare miliardi di triple rdfs:label. Sai che l’item corretto è wd:Q471716 e vuoi ottenere regista e data di pubblicazione.<br><br>
+                        Istruzioni:<br>
+                        1. Ragiona passo per passo su come costruire una query SPARQL efficiente senza utilizzare FILTER(REGEX). Spiega perché conviene usare BIND per fissare l’ID del film e come usare OPTIONAL per evitare errori se una proprietà non è presente.<br>
+                        2. Indica quali proprietà usare per recuperare il regista (wdt:P57) e la data di pubblicazione (wdt:P577), e come filtrare le etichette in lingua inglese con FILTER(LANG(?label) = "en").<br>
+                        3. Scrivi la query SPARQL completa, includendo la clausola SERVICE wikibase:label per ottenere le label e ordinando i risultati per data di pubblicazione.<br>
+                        4. Fornisci un breve commento che riassuma come la query evita i problemi di lentezza e duplicazioni.
+                    </div>
+                    <div class="chat-bubble ai chatgpt">
+                        <span class="chat-meta">COMPORTAMENTO PREVISTO ED ESEMPIO DI RISPOSTA</span>
+                        <p class="font-small"><strong>Come reagirebbero i modelli:</strong><br>
+                        <strong>ChatGPT (GPT‑5.4) con modalità Thinking:</strong> tende a seguire fedelmente le istruzioni di catena di pensiero e, grazie alla funzione Interactive Thinking, mostra il piano di ragionamento e consente di intervenire durante la generazione. In questo scenario produrrà una sequenza esplicita di passi (identificazione dell’item, scelta delle proprietà, uso di BIND e OPTIONAL) e poi la query.<br>
+                        <strong>Gemini 3.1 Pro:</strong> eccelle nel ragionamento astratto e su benchmark scientifici, ma non offre la stessa funzione di visualizzazione del piano. Potrebbe sintetizzare i passaggi in meno righe e arrivare più rapidamente alla query. Grazie all’integrazione con Google Search, potrebbe suggerire di verificare l’ID del film in tempo reale, ma non potrà operare sul desktop come ChatGPT.</p>
+                        <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
+                        <strong>Risposta di ChatGPT:</strong><br>
+                        Ecco come un modello come ChatGPT potrebbe rispondere al prompt sopra, esplicitando i passaggi logici e generando la query SPARQL finale:<br><br>
+                        Passo 1: Conosco l’item del film, quindi uso BIND(wd:Q471716 AS ?film) per fissare la variabile senza ricorrere a FILTER(REGEX).<br>
+                        Passo 2: Per recuperare regista e data di pubblicazione uso le proprietà wdt:P57 e wdt:P577. Uso OPTIONAL per evitare che la mancanza di una delle due interrompa la query e applico SERVICE wikibase:label con filtro di lingua per ottenere etichette in inglese.<br><br>
+                        Passo 3: La query finale è:
+                        <pre><code>SELECT ?filmLabel ?directorLabel ?datePublished WHERE {
+  BIND(wd:Q471716 AS ?film)
+  OPTIONAL { ?film wdt:P57 ?director . }
+  OPTIONAL { ?film wdt:P577 ?datePublished . }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+}
+ORDER BY ?datePublished</code></pre>
+                        Questa query è più efficiente perché elimina la ricerca testuale, utilizza BIND e OPTIONAL per evitare errori e restituisce risultati ordinati senza duplicazioni.
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-toggle-wrapper">
+                    <button class="chat-toggle-btn active" data-target="group-q3-gemini" data-group="g3">VISUALIZZA TRACCIATO GEMINI (PROMPT 3)</button>
+                    <button class="chat-toggle-btn" data-target="group-q3-chatgpt" data-group="g3">VISUALIZZA TRACCIATO CHATGPT (QUERY 3)</button>
+                </div>
+
+                <div id="group-q3-gemini" class="chat-view-group g3 active-view">
+                    <div class="chat-bubble user">
+                        <span class="chat-meta">PROMPT 3 &bull; MODEL: GEMINI &bull; TECNICA: FEW-SHOT</span>
+                        <strong>Domanda:</strong> Dobbiamo estrarre i premi. Esempio: "Vinto" usa wdt:P166, "Nomination" usa wdt:P1411. Scrivi una query che unisca queste due ricerche assegnando un'etichetta testuale chiara. Spiega bene i costrutti.<br>
+                        <em>(Nota degli autori: dopo alcuni tentativi siamo arrivati a questa risposta funzionante)</em>
+                    </div>
+                    <div class="chat-bubble ai gemini">
+                        <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                        La soluzione ottimale non è usare VALUES (che duplicherebbe i risultati considerando nomination e vittorie come entità diverse), ma usare una UNION. La clausola UNION permette di interrogare il database su due binari paralleli: nel primo cerchiamo le vittorie assegnandole a una variabile ?checkVinto, nel secondo le nomination assegnandole a ?checkNomination.<br><br>
+                        Successivamente, usiamo la logica condizionale <code>BIND(IF(BOUND(?checkVinto), "Vinto", IF(BOUND(?checkNomination), "Nomination", "Sconosciuto")) AS ?stato)</code>: BOUND verifica quale dei due binari ha trovato un risultato, e IF assegna la stringa testuale corretta. Infine, usiamo GROUP BY e SAMPLE(?stato) per raggruppare i premi ed eliminare i duplicati causati da fonti multiple.
+                        <div class="chat-media-box">
+                            <img src="llm/foto3.PNG" alt="Screenshot Prompt 3" class="chat-screenshot">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="group-q3-chatgpt" class="chat-view-group g3" style="display: none;">
+                    <div class="chat-bubble user">
+                        <span class="chat-meta">QUERY 3 &bull; MODEL: CHATGPT &bull; TECNICA: FEW-SHOT</span>
+                        <strong>Prompt in stile Few‑shot per ChatGPT:</strong><br><br>
+                        Contesto: dobbiamo creare una query SPARQL che elenchi i premi ricevuti da Barry Lyndon indicando se si tratta di una vittoria o di una nomination. Utilizzeremo un pattern per mappare le categorie agli Oscar. Di seguito un esempio di come associare una categoria con un’etichetta tramite VALUES:
+                        <pre style="margin: 10px 0; background: #e8e8e8; color:#000; padding:10px;"><code>VALUES (?categoria ?etichetta) {
+  (wd:Q102427 "Best Cinematography")
+}
+wd:Q471716 wdt:P166 ?premio .
+?premio wdt:P31 ?categoria .
+BIND("Vinto" AS ?stato)</code></pre>
+                        Istruzioni:<br>
+                        1. Analizza perché l’esempio precedente genera duplicazioni quando il film è nominato e poi vincitore.<br>
+                        2. Fornisci altri due esempi nel blocco VALUES (ad es. Best Costume Design e Best Art Direction) per mostrare al modello il pattern.<br>
+                        3. Scrivi una query SPARQL che, partendo da questi esempi, utilizzi due rami UNION per trattare separatamente vittorie (wdt:P166) e nomination (wdt:P1411), duplicando le variabili ?premio e ?categoria nei due rami. Usa BIND per definire ?stato all’interno di ciascun ramo e poi, fuori dalla UNION, usa BOUND e IF per consolidare lo stato in un’unica variabile.<br>
+                        4. Aggiungi GROUP BY e SAMPLE per evitare duplicazioni e ordina i risultati per categoria.<br>
+                        5. Fornisci solo la query come output finale.
+                    </div>
+                    <div class="chat-bubble ai chatgpt">
+                        <span class="chat-meta">COMPORTAMENTO PREVISTO ED ESEMPIO DI RISPOSTA</span>
+                        <p class="font-small"><strong>Commento sui modelli:</strong><br>
+                        <strong>ChatGPT:</strong> grazie all’esposizione esplicita degli esempi, ChatGPT riconosce il pattern e può replicarlo per altre categorie. La persistenza della memoria aiuta a mantenere coerenza tra i rami e ad applicare BOUND/IF correttamente.<br>
+                        <strong>Gemini:</strong> beneficerà di un contesto ampio (fino a 1 milione di token) e potrà includere ulteriori esempi si necessario. Tuttavia, senza memoria persistente potrebbe dover riformulare parte della logica se la sessione è lunga. Le capacità di ragionamento avanzate di Gemini possono comunque migliorare la correttezza nei casi complessi.</p>
+                        <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
+                        <strong>Risposta di ChatGPT:</strong>
+                        <pre><code>SELECT ?categoriaLabel
+       (IF(BOUND(?win), "Vinto", "Nomination") AS ?stato)
+       (SAMPLE(?premioLabel) AS ?premioLabel) WHERE {
+  BIND(wd:Q471716 AS ?film)
+  VALUES (?categoria ?categoriaLabel) {
+    (wd:Q102427 "Best Cinematography")
+    (wd:Q104200 "Best Costume Design")
+    (wd:Q728396 "Best Art Direction")
+  }
+  {
+    ?film wdt:P166 ?win .
+    ?win wdt:P31 ?categoria .
+    ?win rdfs:label ?premioLabel .
+    FILTER(LANG(?premioLabel) = "en")
+  }
+  UNION
+  {
+    ?film wdt:P1411 ?nomination .
+    ?nomination wdt:P31 ?categoria .
+    ?nomination rdfs:label ?premioLabel .
+    FILTER(LANG(?premioLabel) = "en")
+  }
+}
+GROUP BY ?categoriaLabel
+ORDER BY ?categoriaLabel</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-toggle-wrapper">
+                    <button class="chat-toggle-btn active" data-target="group-q4-gemini" data-group="g4">VISUALIZZA TRACCIATO GEMINI (PROMPT 4)</button>
+                    <button class="chat-toggle-btn" data-target="group-q4-chatgpt" data-group="g4">VISUALIZZA TRACCIATO CHATGPT (QUERY 4)</button>
+                </div>
+
+                <div id="group-q4-gemini" class="chat-view-group g4 active-view">
+                    <div class="chat-bubble user">
+                        <span class="chat-meta">PROMPT 4 &bull; MODEL: GEMINI &bull; TECNICA: ZERO-SHOT</span>
+                        <strong>Domanda:</strong> Scrivi una query per estrarre l'elenco completo di tutte le proprietà associate a "Barry Lyndon", eliminando i codici ID di database esterni. Come funziona il collegamento alla proprietà?
+                    </div>
+                    <div class="chat-bubble ai gemini">
+                        <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                        Per estrarre le proprietà usiamo la sintassi <code>wd:Q471716 ?p ?valore</code>. Le proprietà in Wikidata sono originariamente codici illeggibili (es. P2061). Per trasformarle in testo, usiamo <code>?prop wikibase:directClaim ?p</code>. Questa istruzione agisce como un "ponte" che collega il codice usato nel film alla sua definizione ufficiale nel vocabolario RDF, permettendoci di leggerne la rdfs:label. Per rimuovere il rumore degli ID usiamo <code>FILTER(!REGEX(?propLabel, "ID|identifier|identificativo", "i"))</code>, mantenendo solo i dati semantici rilevanti.
+                    </div>
+                </div>
+
+                <div id="group-q4-chatgpt" class="chat-view-group g4" style="display: none;">
+                    <div class="chat-bubble user">
+                        <span class="chat-meta">QUERY 4 &bull; MODEL: CHATGPT &bull; TECNICA: CHAIN OF THOUGHT</span>
+                        <strong>Prompt in stile Chain of Thought per ChatGPT:</strong><br><br>
+                        Domanda: devi scrivere una query SPARQL che esamini tutte le proprietà dirette di wd:Q471716 e restituisca per ciascuna proprietà la label e un esempio di valore. Devi escludere gli identificatori (proprietà i cui valori sono codici) e concentrarti sulle proprietà con etichette leggibili. Utilizza wikibase:directClaim per recuperare il predicato leggibile e SAMPLE(?valoreLabel) per mostrare un solo esempio di valore.<br><br>
+                        Istruzioni:<br>
+                        1. Argomenta passo dopo passo su come individuare le proprietà da escludere e su come utilizzare REGEX per filtrare solo quelle che contengono parole chiave come "director", "duration" o "location".<br>
+                        2. Spiega perché è importante usare OPTIONAL per evitare errori quando alcune proprietà non hanno label o valori.<br>
+                        3. Definisci la query completa con GROUP BY e ORDER BY per ordinare le proprietà alfabeticamente.<br>
+                        4. Concludi con un breve commento sui risultati attesi e su come questa query aiuta ad identificare lacune (ad es. l’assenza di proprietà per lenti o pittori ispiratori).
+                    </div>
+                    <div class="chat-bubble ai chatgpt">
+                        <span class="chat-meta">COMPORTAMENTO PREVISTO ED ESEMPIO DI RISPOSTA</span>
+                        <p class="font-small"><strong>Osservazioni sui modelli:</strong><br>
+                        <strong>ChatGPT:</strong> la modalità Interactive Thinking permette di evidenziare i ragionamenti sui filtri e sulla scelta delle proprietà. La memoria persistente consente di tornare a questa query nelle fasi successive del progetto.<br>
+                        <strong>Gemini:</strong> può elaborare un contesto molto ampio per includere l’intero elenco di proprietà. La ricerca nativa potrebbe suggerire proprietà esterne non presenti in Wikidata. Tuttavia, manca la funzione di visualizzazione del piano di ragionamento e la memoria di lunga durata.</p>
+                        <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
+                        <strong>Risposta di ChatGPT:</strong><br>
+                        Un possibile output di ChatGPT dopo aver ragionato sui passi descritti potrebbe essere:<br><br>
+                        Passo 1: Leggo tutte le dichiarazioni dove ?film è soggetto e mappo ogni proprietà statement alla sua proprietà diretta tramite wikibase:directClaim. Filtra le label in inglese e uso un OPTIONAL per ottenere un esempio di valore.<br>
+                        Passo 2: Escludo le proprietà che sono identificatori filtrando etichette che contengono la parola "identifier" o altri pattern simili.<br>
+                        Passo 3: Aggrego i risultati per proprietà e ordino alfabeticamente.<br><br>
+                        Query:
+                        <pre><code>SELECT ?property ?propertyLabel (SAMPLE(?valueLabel) AS ?sampleValue) WHERE {
+  BIND(wd:Q471716 AS ?film)
+  ?film ?propStatement ?value .
+  ?property wikibase:directClaim ?propStatement .
+  ?property rdfs:label ?propertyLabel .
+  FILTER(LANG(?propertyLabel) = "en")
+  OPTIONAL {
+    ?value rdfs:label ?valueLabel .
+    FILTER(LANG(?valueLabel) = "en")
+  }
+  FILTER(!REGEX(LCASE(?propertyLabel), "identifier"))
+}
+GROUP BY ?property ?propertyLabel
+ORDER BY ?propertyLabel</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-bubble user">
+                    <span class="chat-meta">QUERY 2 &bull; MODEL: CHATGPT &bull; TECNICA: ZERO-SHOT</span>
+                    <strong>Prompt in stile Zero‑shot per ChatGPT:</strong><br><br>
+                    Domanda: scrivi una query SPARQL per restituire i luoghi di ripresa (filming locations) e il budget del film Barry Lyndon. Utilizza BIND(wd:Q471716 AS ?film) per fissare l’item e recupera i luoghi di ripresa con wdt:P915 e il budget con wdt:P2130. Filtra le etichette in inglese con FILTER(LANG(?locationLabel) = "en"). Se il budget non è presente, la query deve comunque restituire i luoghi di ripresa.<br><br>
+                    Output atteso: solo la query SPARQL, senza spiegazioni o commenti.
+                </div>
+                <div class="chat-bubble ai chatgpt">
+                    <span class="chat-meta">COMPORTAMENTO E COSTRUTTO DI RISPOSTA DI CHATGPT</span>
+                    <p class="font-small"><strong>Differenze tra i modelli:</strong><br>
+                    <strong>ChatGPT (zero‑shot):</strong> genererà direttamente la query. La persistenza della memoria lo aiuta a ricordare che P915 è la proprietà per i luoghi di ripresa e P2130 per il budget senza ulteriori esempi.<br>
+                    <strong>Gemini 3.1 Pro:</strong> grazie alla finestra di contesto da 1 milione di token e all’integrazione con Google Search, potrebbe consultare dinamicamente le proprietà se non le conosce. In zero‑shot potrebbe comunque fornire la query corretta. In mancanza di memoria persistente, le proprietà potrebbero essere meno immediate se l’argomento non è trattato in sessioni precedenti.</p>
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
+                    <strong>Risposta di ChatGPT:</strong><br>
+                    Dato il prompt zero‑shot, un modello come ChatGPT risponderebbe direttamente con la query richiesta:
+                    <pre><code>SELECT ?locationLabel ?budget WHERE {
+  BIND(wd:Q471716 AS ?film)
+  OPTIONAL {
+    ?film wdt:P915 ?location .
+    ?location rdfs:label ?locationLabel .
+    FILTER(LANG(?locationLabel) = "en")
+  }
+  OPTIONAL { ?film wdt:P2130 ?budget . }
+}</code></pre>
+                </div>
+            </div>
+
+            <hr class="divider">
+            <div class="notes-text-center fade-on-scroll" style="margin-bottom: 40px;">
+                <span class="label">PROMPT ENGINE &bull; SEZIONE 02</span>
+                <h2 class="notes-heading" style="text-align: center;">Fase 2: Analisi ed Estrazione della Colonna Sonora</h2>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-bubble user">
+                    <span class="chat-meta">PROMPT 5 &bull; MODEL: GEMINI &bull; TECNICA: ZERO-SHOT</span>
+                    <strong>Domanda:</strong> Scrivi la query SPARQL esatta per restituirmi i brani musicali che sono attualmente collegati al film su Wikidata, in modo da dimostrare il gap informativo.
+                </div>
+                <div class="chat-bubble ai gemini">
+                    <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                    Per estrarre le tracce già collegate, interroghiamo l'entità del film tramite la proprietà specifica per il tema musicale: <code>wd:Q471716 wdt:P942 ?entitaMusicale</code>. Recuperando la label in inglese (rdfs:label), otteniamo un elenco molto breve che mostra solo pochissimi compositori, confermando l'assenza di gran parte della colonna sonora.
+                </div>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-bubble user">
+                    <span class="chat-meta">PROMPT 6 &bull; MODEL: GEMINI &bull; TECNICA: CHAIN OF THOUGHT</span>
+                    <strong>Domanda:</strong> Ragiona sulle tracce musicali totali del film. Quali possiamo collegare direttamente perché esistono su Wikidata e quali invece mancano e richiedono la creazione di un URI locale?
+                </div>
+                <div class="chat-bubble ai gemini">
+                    <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                    Le tracce che possiedono già un'entità Wikidata includono: Piano Trio di Schubert (wd:Q1660217), Cello Concerto di Vivaldi (wd:Q124151832), Concerto di Bach (wd:Q11915173), la marcia di Mozart (wd:Q723559) e i brani tradizionali The British Grenadiers (wd:Q127058368) e Lilliburlero (wd:Q1434350), oltre alla Sarabande di Händel (wd:Q7423184). Le tracce mancanti includono: German Dance No.1 di Schubert, Hohenfriedberger March di Federico il Grande, e i brani eseguiti da The Chieftains (The Sea Maiden) e Seán Ó Riada (Tin Whistles e Women of Ireland). Per queste dovremo creare URI locali.
+                </div>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-bubble user">
+                    <span class="chat-meta">PROMPT 7 &bull; MODEL: GEMINI &bull; TECNICA: FEW-SHOT</span>
+                    <strong>Domanda:</strong> Esempio di Uri-Minting: ex:hohenfriedbergerMarch rdfs:label "Titolo". Scrivi la query CONSTRUCT per generare il sotto-grafo RDF dei brani mancanti, spiegando il funzionamento di questo costrutto per la commissione.
+                </div>
+                <div class="chat-bubble ai gemini">
+                    <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                    La query CONSTRUCT forzerà il motore SPARQL a generare nuove triple RDF basate sui nostri dati locali. A differenza di una query SELECT che restituisce una semplice tabella di risultati, CONSTRUCT genera un vero e proprio nuovo grafo RDF sul momento, strutturato in triple (Soggetto-Predicato-Oggetto). Nel blocco WHERE usiamo VALUES per dichiarare i nostri identificatori locali (es. ex:schubertGermanDanceNo1), assegnando loro un titolo tramite rdfs:label e ancorandoli a database musicali reali tramite rdfs:seeAlso. Il blocco CONSTRUCT impacchetta questi dati collegandoli al film tramite la proprietà wdt:P942.
+                </div>
+            </div>
+
+            <hr class="divider">
+            <div class="notes-text-center fade-on-scroll" style="margin-bottom: 40px;">
+                <span class="label">PROMPT ENGINE &bull; SEZIONE 03</span>
+                <h2 class="notes-heading" style="text-align: center;">Fase 3: Analisi ed Estrazione delle Ispirazioni Artistiche</h2>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-bubble user">
+                    <span class="chat-meta">PROMPT 8 &bull; MODEL: GEMINI &bull; TECNICA: ZERO-SHOT</span>
+                    <strong>Domanda:</strong> Scrivi una query per verificare se ci sono dei dipinti attualmente collegati al film. Controlla simultaneamente le proprietà "inspired by" (P941), "influenced by" (P737) e "depicts" (P180).
+                </div>
+                <div class="chat-bubble ai gemini">
+                    <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                    Utilizziamo il costrutto <code>VALUES ?prop { wdt:P941 wdt:P737 wdt:P180 }</code> per dichiarare le tre proprietà da cercare in una sola esecuzione. Interrogando wd:Q471716 ?prop ?collegamento, la query non restituisce alcun risultato, dimostrando che i riferimenti artistici sono un buco informativo totale nel grafo attuale.
+                    <div class="chat-media-box">
+                        <img src="llm/foto4.PNG" alt="Screenshot Prompt 4" class="chat-screenshot">
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-bubble user">
+                    <span class="chat-meta">PROMPT 9 &bull; MODEL: GEMINI &bull; TECNICA: CHAIN OF THOUGHT</span>
+                    <strong>Domanda:</strong> Ragiona su come individuare nel vocabolario di Wikidata la proprietà esatta per l'ispirazione artistica, e dimostrami con una query che è corretto usarla per i film.
+                </div>
+                <div class="chat-bubble ai gemini">
+                    <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                    Interroghiamo wikibase:Property filtrando tramite REGEX le parole "inspired", "painting" o "artistic". Emerge che la proprietà "inspired by" (wdt:P941) è quella corretta. Per confermare che possa essere associata alla cinematografia, eseguiamo una query di validazione: cerchiamo film (wdt:P31 wd:Q11424) che usano il predicato wdt:P941 collegandolo ad opere d'arte (wd:Q3305213). Il risultato ci restituisce vari esempi di film già esistenti nel database, validando metodologicamente la nostra scelta.
+                </div>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-bubble user">
+                    <span class="chat-meta">PROMPT 10 &bull; MODEL: GEMINI &bull; TECNICA: FEW-SHOT</span>
+                    <strong>Domanda:</strong> Quali sono i quadri del Settecento che hanno ispirato la composizione del film? Esempio: "The Blue Boy di Thomas Gainsborough per i costumi".
+                </div>
+                <div class="chat-bubble ai gemini">
+                    <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                    In base alla documentazione critica, i riferimenti sono:<br><br>
+                    Thomas Gainsborough - "The Blue Boy" (wd:Q604761) &rarr; per costumi e portamento.<br>
+                    William Hogarth - "The Graham Children" (wd:Q3451328) &rarr; composizione visiva delle scene con bambini.<br>
+                    William Hogarth - "Marriage A-la-Mode" (wd:Q5220868) &rarr; per la decadenza morale e le scommesse.<br>
+                    William Hogarth - "An Election Entertainment" (wd:Q66970124) &rarr; ispirazione per le scene caotiche.<br>
+                    Thomas Gainsborough - "Lady Alston" (wd:Q18937352) &rarr; estetica e illuminazione di Lady Lyndon.
+                </div>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-bubble user">
+                    <span class="chat-meta">PROMPT 11 &bull; MODEL: GEMINI &bull; TECNICA: ZERO-SHOT</span>
+                    <strong>Domanda:</strong> Scrivi la query CONSTRUCT per generare le triple di questi quadri usando la proprietà che abbiamo individuato.
+                </div>
+                <div class="chat-bubble ai gemini">
+                    <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                    Strutturiamo la query definendo lo schema <code>wd:Q471716 wdt:P941 ?quadro .</code> nel costrutto CONSTRUCT. All'interno del blocco WHERE, usiamo VALUES ?quadro elencando in modo esplicito i cinque codici "Q" (da wd:Q604761 a wd:Q18937352) che abbiamo estratto dalla documentazione. Questo genererà il codice in sintassi Turtle in cui le entità reali di Wikidata vengono finalmente collegate al film.
+                </div>
+            </div>
+
+            <hr class="divider">
+            <div class="notes-text-center fade-on-scroll" style="margin-bottom: 40px;">
+                <span class="label">PROMPT ENGINE &bull; SEZIONE 04</span>
+                <h2 class="notes-heading" style="text-align: center;">Fase 4: Modellazione Ontologica per le Lenti Cinematografiche</h2>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-toggle-wrapper">
+                    <button class="chat-toggle-btn active" data-target="group-q12-gemini" data-group="g12">VISUALIZZA TRACCIATO GEMINI (PROMPT 12)</button>
+                    <button class="chat-toggle-btn" data-target="group-q12-chatgpt" data-group="g12">VISUALIZZA TRACCIATO CHATGPT (QUERY 5)</button>
+                </div>
+
+                <div id="group-q12-gemini" class="chat-view-group g12 active-view">
+                    <div class="chat-bubble user">
+                        <span class="chat-meta">PROMPT 12 &bull; MODEL: GEMINI &bull; TECNICA: ZERO-SHOT</span>
+                        <strong>Domanda:</strong> Scrivi una query per estrarre le proprietà specifiche di Barry Lyndon e verificare se c'è un metadato esistente che citi la lente ottica usata.
+                    </div>
+                    <div class="chat-bubble ai gemini">
+                        <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                        Eseguiamo l'estrazione totale delle proprietà ?p del film. Per trovare informazioni sull'ottica, impostiamo un "setaccio" tramite la funzione: <code>FILTER(REGEX(?propLabel, "lens|camera|optical|technique|method|aspect", "i"))</code>. Questa espressione regolare analizza tutte le etichette delle proprietà e lascia passare solo quelle che contengono parole chiave tecniche. Poiché la query non restituisce valori idonei, dimostriamo il vuoto informativo.
+                    </div>
+                </div>
+
+                <div id="group-q12-chatgpt" class="chat-view-group g12" style="display: none;">
+                    <div class="chat-bubble user">
+                        <span class="chat-meta">QUERY 5 &bull; MODEL: CHATGPT &bull; TECNICA: CHAIN OF THOUGHT</span>
+                        <strong>Prompt in stile Chain of Thought per ChatGPT:</strong><br><br>
+                        Contesto: vuoi verificare se Barry Lyndon contiene proprietà tecniche come la lente cinematografica o la tecnica di ripresa. Utilizza wikibase:directClaim per esplorare tutte le proprietà, filtra con REGEX su parole chiave ("lens", "camera", "optical", "technique"), e analizza i risultati. Se non trovi proprietà relative alle lenti, proponi la creazione di una nuova proprietà locale.<br><br>
+                        Istruzioni:<br>
+                        1. Spiega passo per passo come costruire la query SPARQL per cercare proprietà tecniche, includendo le keyword da usare nel REGEX e come interpretare l’assenza di risultati.<br>
+                        2. Se la query non restituisce alcuna proprietà significativa sulle lenti, suggerisci come modellare una nuova proprietà locale (ad es. ex:cinematographicLensUsed) con dominio “Film” e range “Lente”, fornendo un esempio di triple Turtle.<br>
+                        3. Fornisci la query SPARQL per la ricerca e un esempio di triple per la nuova proprietà.
+                    </div>
+                    <div class="chat-bubble ai chatgpt">
+                        <span class="chat-meta">COMPORTAMENTO PREVISTO ED ESEMPIO DI RISPOSTA</span>
+                        <p class="font-small"><strong>Differenze previste tra i modelli:</strong><br>
+                        <strong>ChatGPT:</strong> seguirà i passaggi descritti, fornendo sia la query sia l’esempio di triple in linguaggio RDF/Turtle. Potrebbe anche utilizzare la sua funzione di codice per formattare correttamente le triple.<br>
+                        <strong>Gemini:</strong> grazie alle sue capacità di ragionamento avanzato potrebbe proporre alternative creative per modellare le lenti, ad esempio suggerendo ontologie esistenti. Tuttavia, non avendo un agente desktop non potrà eseguire in autonomia la creazione delle triple o la validazione in tool esterni.</p>
+                        <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
+                        <strong>Risposta di ChatGPT :</strong><br>
+                        Di seguito un esempio di come ChatGPT potrebbe rispondere al prompt:<br><br>
+                        Passo 1: Uso BIND per fissare ?film = wd:Q471716. Per ogni proprietà diretta, recupero la sua label tramite rdfs:label e filtro con un'espressione regolare sulle parole chiave "lens", "camera", "optical" o "technique" (ignorando maiuscole/minuscole).<br>
+                        Passo 2: Se la query non restituisce proprietà pertinenti sulle lenti, propongo di definire una nuova proprietà locale.<br><br>
+                        Query SPARQL per la ricerca:
+                        <pre><code>SELECT ?prop ?propLabel WHERE {
+  BIND(wd:Q471716 AS ?film)
+  ?film ?propStatement ?value .
+  ?prop wikibase:directClaim ?propStatement .
+  ?prop rdfs:label ?propLabel .
+  FILTER(REGEX(LCASE(?propLabel), "lens|camera|optical|technique"))
+}</code></pre>
+                        Dall’esecuzione di questa query non emergono proprietà relative alla lente cinematografica usata. Per modellare questa informazione posso definire nuove triple Turtle:
+                        <pre><code>ex:cinematographicLensUsed a rdf:Property ;
+  rdfs:label "Cinematographic lens used"@en ;
+  rdfs:domain wd:Q11424 ; # Film
+  rdfs:range wd:Q1149305 . # Lens
+
+wd:Q471716 ex:cinematographicLensUsed ex:zeiss070 .
+ex:zeiss070 rdfs:label "Zeiss 50mm f/0.7 lens"@en .</code></pre>
+                        Così il grafo viene arricchito con l'informazione mancante sulla lente utilizzata durante le riprese.
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-bubble user">
+                    <span class="chat-meta">PROMPT 13 &bull; MODEL: GEMINI &bull; TECNICA: CHAIN OF THOUGHT</span>
+                    <strong>Domanda:</strong> Esiste in tutto il database globale di Wikidata una proprietà per le lenti cinematografiche? Come filtriamo l'estrazione per evitare lenti di telescopi o satelliti?
+                </div>
+                <div class="chat-bubble ai gemini">
+                    <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                    Interroghiamo tutte le proprietà globali (?property a wikibase:Property). Applichiamo il Filtro 1: controlliamo che "camera" o "lens" siano presenti nel nome o nella descrizione. Applichiamo il Filtro 2 (Cruciale): forziamo la stringa descrittiva a contenere parole come "film", "movie", "cinema" o "motion picture". L'esito negativo globale certifica la necessità di creare concettualmente una nuova estensione dell'ontologia, poiché Wikidata non traccia in modo nativo la tecnologia ottica dei film.
+                </div>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-bubble user">
+                    <span class="chat-meta">PROMPT 14 &bull; MODEL: GEMINI &bull; TECNICA: FEW-SHOT</span>
+                    <strong>Domanda:</strong> Scrivi la query CONSTRUCT per creare questa nuova proprietà (ex:cinematographicLensUsed). Esempio di regole: Dominio=Film, Range=Lente. Collegala poi alla nota lente Zeiss (wd:Q4035883).
+                </div>
+                <div class="chat-bubble ai gemini">
+                    <span class="chat-meta">RISPOSTA OTTENUTA</span>
+                    Generiamo una query CONSTRUCT ibrida. La prima parte del CONSTRUCT modella la TBox (Terminological Box): definiamo le regole concettuali, dichiarando che ex:cinematographicLensUsed è una rdf:Property, specificandone il dominio (rdfs:domain wd:Q11424 per i film) e il range d'azione (rdfs:range wd:Q109672300 per le lenti). La seconda parte rappresenta l'ABox (Assertional Box): inseriamo il dato reale (l'istanza) collegando fisicamente l'ID di Barry Lyndon all'entità della lente della NASA tramite la nostra nuova tupla wd:Q471716 ex:cinematographicLensUsed wd:Q4035883.
+                    <div class="chat-media-box">
+                        <img src="llm/foto6.PNG" alt="Screenshot Prompt 6" class="chat-screenshot">
+                    </div>>
+                </div>
+            </div>
+
+            <div class="chat-container fade-on-scroll">
+                <div class="chat-bubble user">
+                    <span class="chat-meta">PROMPT 15 &bull; MODEL: GEMINI &bull; TECNICA: FEW-SHOT</span>
+                    <strong>Domanda:</strong> Creami sia la sinstassi turtle per collegare l'entità film alle colonne sonore, fai il tutto sia per le entità esistenti che quelle mancanti, (se mancanti generami dei link). Le entità già esistenti sono le seguenti (già scritte in turtle):
+                    <pre style="margin-top: 10px; font-size:0.85rem; background:#eaeaea; padding:10px; color:#000;"><code>@prefix wd: &lt;http://www.wikidata.org/entity/&gt; .
+@prefix wdt: &lt;http://www.wikidata.org/prop/direct/&gt; .
+# SOGGETTO CENTRALE: Barry Lyndon (wd:Q471716)
+# PREDICATO: theme music (wdt:P942)
+wd:Q471716 wdt:P942 wd:Q1660217 .
+wd:Q471716 wdt:P942 wd:Q124151832 .
+wd:Q471716 wdt:P942 wd:Q11915173 .
+wd:Q471716 wdt:P942 wd:Q723559 .
+wd:Q471716 wdt:P942 wd:Q127058368 .
+wd:Q471716 wdt:P942 wd:Q1434350 .
+wd:Q471716 wdt:P942 wd:Q7423184 .</code></pre>
+                </div>
+                <div class="chat-bubble ai gemini">
+                    <span class="chat-meta">RISPOSTA INSERITA</span>
+                    <div class="chat-media-box">
+                        <img src="llm/foto5.PNG" alt="Screenshot Prompt 5" class="chat-screenshot">
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">QUADRO EVALUATIVO ACCADEMICO</span>
+                    <h2 class="notes-heading">Valutazione Critica degli LLM: Analisi Comparativa dei Pro e Contro</h2>
+                    <p class="synopsis-text">
+                        L’utilizzo di ChatGPT e Gemini come assistenti semantici ha evidenziato come i modelli linguistici necessitino di una costante supervisione umana. Di seguito si sintetizzano i riscontri reali emersi durante lo sviluppo del progetto, evidenziando i limiti strutturali e le risposte sistemiche adottate.
+                    </p>
+
+                    <h3 style="font-size: 1.2rem; font-weight: 600; text-transform: uppercase; margin-top: 40px; letter-spacing: -0.5px;">1. Limiti Comuni e Interventi di Correzione Umana (I Contro)</h3>
+                    <p class="synopsis-text">
+                        Nonostante l'apparente autonomia dei modelli, in diverse occasioni il flusso di lavoro si è bloccato, richiedendo molteplici riscritture e un intervento umano correttivo e sistematico:
+                    </p>
+                    
+                    <div class="art-cards-container" style="margin-top: 20px; margin-bottom: 40px;">
+                        <div class="art-card">
+                            <strong>Cecità sulle Entità di Wikidata</strong>
+                            <p>Sia ChatGPT che Gemini hanno mostrato forti difficoltà nel rintracciare i codici "Q" corretti per le risorse più specifiche (come i singoli movimenti dei brani o i dipinti minori). L'analisi ha richiesto una guida umana costante per inserire manualmente gli identificatori corretti estratti da ricerche esterne.</p>
+                        </div>
+                        <div class="art-card">
+                            <strong>Fallimento Logico senza Esempi (Il caso BIND nella UNION)</strong>
+                            <p>Di fronte a costrutti SPARQL avanzati, i modelli hanno inizialmente generato query non funzionanti. Ad esempio, posizionando erroneamente l'istruzione BIND all'interno dei singoli rami isolati di una UNION, la variabile perdeva lo scope (il raggio d'azione) una volta terminata la clausola. Senza l'iniezione manuale di schemi sintattici preesistenti e corretti, i modelli non sono stati in grado di risolvere autonomamente il problema logico.</p>
+                        </div>
+                        <div class="art-card">
+                            <strong>Incoerenze e Iterazioni Multiple</strong>
+                            <p>Come emerso durante lo sviluppo, i modelli tendono a soffrire di "pigrizia" o perdita di memoria a lungo termine durante la sessione. È stato necessario richiedere più volte la correzione dello stesso codice a causa di risposte troppo brevi, troncate, prive di prefissi obbligatori o affette da imprecisioni sintattiche ripetute.</p>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 1.2rem; font-weight: 600; text-transform: uppercase; margin-top: 40px; margin-bottom: 20px; letter-spacing: -0.5px;">2. Analisi Comparativa</h3>
+                    <p class="synopsis-text">
+                        Nonostante i limiti strutturali, l'oasi di efficienza generata dall'uso combinato dei due strumenti ha offerto vantaggi speculari e complementari se applicati alle giuste fasi della pipeline metodologica:
+                    </p>
+
+                    <div style="overflow-x: auto; margin-top: 25px; margin-bottom: 40px;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 1rem; border-top: 2px solid #000; border-bottom: 2px solid #000;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid #000; background-color: #fafafa;">
+                                    <th style="padding: 15px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; width: 25%;">Fase del Progetto</th>
+                                    <th style="padding: 15px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; width: 37.5%; border-left: 1px solid #eee;">ChatGPT (Modello Logico)</th>
+                                    <th style="padding: 15px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; width: 37.5%; border-left: 1px solid #eee;">Gemini (Modello Connesso)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 15px; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; vertical-align: top;">Ragionamento e Spiegazioni (CoT)</td>
+                                    <td style="padding: 15px; vertical-align: top; text-align: justify; word-spacing: -1px; border-left: 1px solid #eee;"><strong style="font-size: 0.75rem; letter-spacing: 0.5px; display: block; margin-bottom: 5px; color:#000;">PRO:</strong> Eccellente nella scomposizione concettuale. Spiega alla perfezione la differenza teorica tra TBox (schema della proprietà delle lenti) e ABox (tripla del film).</td>
+                                    <td style="padding: 15px; vertical-align: top; text-align: justify; word-spacing: -1px; border-left: 1px solid #eee;"><strong style="font-size: 0.75rem; letter-spacing: 0.5px; display: block; margin-bottom: 5px; color:#666;">CONTRO:</strong> Più sbrigativo. Tende a fornire il codice finale omettendo i passaggi logici intermedi necessari alla comprensione didattica.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 15px; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; vertical-align: top;">Rispetto dei Formati (Few-Shot)</td>
+                                    <td style="padding: 15px; vertical-align: top; text-align: justify; word-spacing: -1px; border-left: 1px solid #eee;"><strong style="font-size: 0.75rem; letter-spacing: 0.5px; display: block; margin-bottom: 5px; color:#666;">CONTRO:</strong> Spesso prolisso. Anche se vincolato da un esempio, tende a reintrodurre preamboli testuali o formattazioni personalizzate che rompono la pulizia del codice Turtle.</td>
+                                    <td style="padding: 15px; vertical-align: top; text-align: justify; word-spacing: -1px; border-left: 1px solid #eee;"><strong style="font-size: 0.75rem; letter-spacing: 0.5px; display: block; margin-bottom: 5px; color:#000;">PRO:</strong> Estremamente rigoroso nel replicare i pattern. Isola il blocco di triple in sintassi Turtle rispettando fedelmente la punteggiatura RDF (punti e virgola, punti).</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 15px; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; vertical-align: top;">Ancoraggio dei Dati (Uri-Minting)</td>
+                                    <td style="padding: 15px; vertical-align: top; text-align: justify; word-spacing: -1px; border-left: 1px solid #eee;"><strong style="font-size: 0.75rem; letter-spacing: 0.5px; display: block; margin-bottom: 5px; color:#666;">CONTRO:</strong> Forte propensione all'allucinazione degli URL. Ha generato stringhe sintatticamente verosimili per la colonna sonora che si traducevano in link inesistenti (Error 404).</td>
+                                    <td style="padding: 15px; vertical-align: top; text-align: justify; word-spacing: -1px; border-left: 1px solid #eee;"><strong style="font-size: 0.75rem; letter-spacing: 0.5px; display: block; margin-bottom: 5px; color:#000;">PRO:</strong> Navigazione web e recupero delle fonti impeccabile. Ha fornito link reali e attivi verso MusicBrainz, Wikipedia e cataloghi museali per la proprietà <code>rdfs:seeAlso</code>.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    
+
+                    <div class="analysis-box" style="margin-top: 40px;">
+                        <span class="label">CONSIDERAZIONE PER L'ESAME</span>
+                        <p class="synopsis-text" style="margin-bottom: 0;">
+                            Questa esperienza sul campo dimostra in modo inoppugnabile che gli LLM non sostituiscono le competenze verticali del <strong>Digital Humanist</strong>, ma fungono esclusivamente da acceleratori di codice. La progettazione concettuale del grafo, la risoluzione strategica dei conflitti di scope nelle query e la validazione storiografica delle fonti rimangono un'esclusiva e inderogabile responsabilità logica dell'operatore umano.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div> <hr class="divider">
+        <div class="pagination-container fade-on-scroll" style="max-width: 1200px; margin: 0 auto; padding: 40px 5%;">
+            <a href="migliorie.html" class="nav-btn prev-btn">
+                <span class="arrow">&#8592;</span> MIGLIORIE PROPOSTE
+            </a>
+            <a href="conclusioni.html" class="nav-btn next-btn">
+                SFIDE AFFRONTATE <span class="arrow">&#8594;</span>
+            </a>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
