@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Progetto - Barry Lyndon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <button id="menu-toggle" class="menu-btn" aria-label="Apri Menu">
+            <div class="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+            <span class="menu-text"></span>
+        </button>
+    </header>
+
+    <div id="side-menu" class="side-nav">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="il-progetto.html">Il Progetto</a></li>
+                <li><a href="metodologia.html">Metodologia</a></li>
+                <li><a href="estrazione.html">Estrazione dati con SPARQL</a></li>
+                <li><a href="lacune.html">Individuazione Lacune</a></li>
+                <li><a href="migliorie.html">Migliorie Proposte</a></li>
+                <li><a href="llm.html">LLM - Prompt e Confronti</a></li>
+                <li><a href="conclusioni.html">Sfide Affrontate</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="menu-overlay" class="overlay"></div>
+
+    <main class="editorial-page">
+        
+        <div class="title-banner fade-on-scroll">
+            <img src="img/sfondo2.jpg" class="banner-img" alt="Sfondo Progetto">
+            <div class="banner-overlay">
+                <span class="label banner-label">CAPITOLO 01</span>
+                <h1 class="banner-title">Il Progetto</h1>
+            </div>
+        </div>
+
+        <div class="notes-wrapper">
+            
+            <div class="notes-text-center fade-on-scroll">
+                <p class="synopsis-text lead-text">
+                    Questo progetto è stato sviluppato per il corso di laurea <u>Metodologie e Tecniche di Simulazione</u>. Il nostro obiettivo è stato esplorare criticamente come la combinazione di query SPARQL e Large Language Models (LLM) possa identificare e arricchire sistematicamente i limiti informativi all'interno di un grafo di conoscenza esistente.
+                </p>
+            </div>
+
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-media">
+                    <img src="img/cover1.jpg" alt="Ispirazione pittorica Settecentesca">
+                </div>
+                <div class="notes-text">
+                    <span class="label">IL SOGGETTO</span>
+                    <h2 class="notes-heading">Barry Lyndon - Stanley Kubrick</h2>
+                    <p class="synopsis-text">
+                        Abbiamo scelto di concentrarci su Barry Lyndon (1975), il celebre capolavoro cinematografico di Stanley Kubrick. La scelta è guidata da una profonda passione per l'opera, ma soprattutto dal suo immenso valore storico, tecnico e artistico: il film rappresenta una vera e propria "pittura in movimento", dove Kubrick ha superato i limiti tecnologici dell'epoca utilizzando speciali lenti ottiche NASA per girare a lume di candela, ispirandosi direttamente alla pittura settecentesca di maestri come Thomas Gainsborough e William Hogarth.
+                    </p>
+                    
+                    <p class="synopsis-text" style="margin-top: 30px; margin-bottom: 0;">
+                        Abbiamo scelto Barry Lyndon per questo progetto perché:
+                    </p>
+                    <div class="synopsis-text">
+                        <ul style="padding-left: 25px; margin-top: 10px;">
+                            <li style="margin-bottom: 0px;"><strong>È un'opera ampiamente conosciuta e celebrata</strong> a livello internazionale, considerata uno dei vertici assoluti della cinematografia.</li>
+                            <li style="margin-bottom: 0px;"><strong>La sua straordinaria rilevanza storica, artistica e tecnica</strong> permette di tracciare facilmente parallelismi e collegamenti diretti con altri domini del patrimonio culturale, in particolare con la pittura del Settecento e la storia dell'innovazione tecnologica ottica.</li>
+                            
+                            <li style="margin-bottom: 0px;"><strong>Sebbene le descrizioni esistenti sui grafi di conoscenza siano accurate,</strong> esse si limitano agli aspetti commerciali e industriali del film; c'è quindi un margine per migliorarne la rappresentazione semantica, arricchendola con dettagli visivi, influenze artistiche e tecniche.</li>
+                            
+                            <li style="margin-bottom: 0;"><strong>Infine, questo capolavoro rappresenta una passione condivisa</strong> all'interno del nostro team, rendendo stimolante la sfida di tradurre la complessità di un'opera d'arte cinematografica nel linguaggio strutturato del Web Semantico</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes-grid inverted fade-on-scroll">
+                <div class="notes-text">
+                    <span class="label">IL LIMITE</span>
+                    <h2 class="notes-heading">Il silenzio del grafo.</h2>
+                    <p class="synopsis-text">
+                        Come grafo di conoscenza di base abbiamo scelto Wikidata, l'hub di dati collegati (Linked Data) più esteso e utilizzato al mondo. Sebbene Wikidata offra una rappresentazione ricca e ben strutturata di Barry Lyndon per quanto riguarda i dati commerciali, produttivi e di cast, l'analisi semantica ha fatto emergere una forte lacuna (gap informativo): il grafo è completamente silente sulle connessioni artistiche (i dipinti) e sugli strumenti tecnologici (le lenti Zeiss f/0.7) che ne definiscono l'identità culturale.
+                    </p>
+                </div>
+                <div class="notes-media">
+                    <img src="img/img5.jpg" alt="Rappresentazione di un Grafo di Conoscenza">
+                </div>
+            </div>
+
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-media">
+                    <img src="img/img7.jpg" alt="Intelligenza Artificiale e Codice">
+                </div>
+                <div class="notes-text">
+                    <span class="label">LA METODOLOGIA</span>
+                    <h2 class="notes-heading">Tre fasi rigorose.</h2>
+                    <p class="synopsis-text">
+                        Il nostro lavoro si è articolato seguendo una metodologia rigorosa in tre fasi: un'analisi iniziale basato su documentazione storica e query SPARQL avanzate con filtri testuali ed euristici (La combinazione di DISTINCT e REGEX) per dimostrare scientificamente l'assenza del dato; una fase di Estensione Ontologica teorica in formato Turtle (RDFS/OWL) per superare i limiti strutturali del vocabolario standard di Wikidata creando nuove proprietà ad hoc (come cinematographicLensUsed); infine, l'Estrazione e Validazione delle Triple tramite diverse strategie di Prompt Engineering (Zero-shot, Few-shot e Chain of Thought) supportate da molteplici modelli di Intelligenza Artificiale, capaci di tradurre le informazioni testuali in nodi e archi di conoscenza validata.
+                    </p>
+                </div>
+            </div>
+
+            <div class="tools-section fade-on-scroll">
+                <span class="label" style="text-align: center;">GLI STRUMENTI</span>
+                <div class="tools-grid">
+                    <div class="tool-item">
+                        <h3 class="tool-title">Wikidata</h3>
+                        <p class="synopsis-text" style="font-size: 1.1rem;">Base di partenza per l'interrogazione del grafo e l'analisi dei Linked Data.</p>
+                    </div>
+                    <div class="tool-item">
+                        <h3 class="tool-title">Query Service di Wikidata</h3>
+                        <p class="synopsis-text" style="font-size: 1.1rem;">Endpoint SPARQL utilizzato per l'audit strutturale e la ricerca di proprietà di dominio.</p>
+                    </div>
+                    <div class="tool-item">
+                        <h3 class="tool-title">ChatGPT</h3>
+                        <p class="synopsis-text" style="font-size: 1.1rem;">Modello linguistico utilizzato per l'estrazione, generazione delle triple, validazione logica e co-progrettazione delle estensioni ontologiche. </p>
+                    </div>
+                    <div class="tool-item">
+                        <h3 class="tool-title">Gemini</h3>
+                        <p class="synopsis-text" style="font-size: 1.1rem;">Modello linguistico utilizzato per l'estrazione, generazione delle triple, validazione logica e co-progrettazione delle estensioni ontologiche.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-section fade-on-scroll">
+                <hr class="divider" style="margin-bottom: 60px;">
+                <span class="label" style="text-align: center;">IL NOSTRO TEAM</span>
+                <p class="synopsis-text" style="text-align: center; margin-bottom: 60px;">Questo progetto è stato sviluppato in collaborazione da:</p>
+                
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-img-wrapper">
+                            <img src="img/faccia1.jpg" alt="Alessandro Miani">
+                        </div>
+                        <h4 class="member-name">Alessandro Miani</h4>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-img-wrapper">
+                            <img src="img/faccia2.jpg" alt="Lorenzo Marabese">
+                        </div>
+                        <h4 class="member-name">Lorenzo Marabese</h4>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-img-wrapper">
+                            <img src="img/faccia3.jpg" alt="Ludovico Pio Vicari">
+                        </div>
+                        <h4 class="member-name">Ludovico Pio Vicari</h4>
+                    </div>
+
+                    <div class="team-member">
+                        <div class="member-img-wrapper">
+                            <img src="img/faccia4.jpg" alt="Nathaniel Scalabrino">
+                        </div>
+                        <h4 class="member-name">Nathaniel Scalabrino</h4>
+                    </div>
+                </div>
+            </div>
+
+        </div> <hr class="divider">
+        <div class="pagination-container fade-on-scroll" style="max-width: 1200px; margin: 0 auto; padding: 40px 5%;">
+            <a href="index.html" class="nav-btn prev-btn">
+                <span class="arrow">&#8592;</span> HOMEPAGE
+            </a>
+            <a href="metodologia.html" class="nav-btn next-btn">
+                METODOLOGIA <span class="arrow">&#8594;</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            
+            <div class="footer-col col-names">
+                
+                <img src="img/logo2.png" alt="Logo Università" class="footer-logo">
+                <ul class="footer-list">
+                    <li>Alessandro Miani </li>
+                    <li>Lorenzo Marabese</li>
+                    <li>Ludovico Pio Vicari</li>
+                    <li>Nathaniel Scalabrino</li>
+                </ul>
+                
+                <div class="footer-legal">
+                    QUESTO PROGETTO È STATO REALIZZATO A SCOPO<br>
+                    DIDATTICO PER L'UNIVERSITÀ E NON HA ALCUN<br>
+                    SCOPO DI LUCRO O AFFILIAZIONE COMMERCIALE.
+                </div>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">CORSO DI LAUREA</span>
+                <ul class="footer-list secondary-list">
+                    <li>GOVERNANCE E POLITICHE DELL'INNOVAZIONE DIGITALE</li>
+                </ul>
+                
+                <div class="footer-spacer"></div>
+
+                <span class="footer-label">INSEGNAMENTO</span>
+                <ul class="footer-list secondary-list">
+                    <li>METODOLOGIE E TECNICHE DI SIMULAZIONE</li>
+                </ul>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">IL PROGETTO</span>
+                <p class="footer-text">
+                    Progetto di analisi dell'ontologia di Wikidata, sviluppato con l'obiettivo di mappare e strutturare semanticamente le entità legate all'universo di Barry Lyndon.
+                </p>
+                
+                <div class="year-box">
+                    <span class="year-label">ANNO ACCADEMICO</span>
+                    <span class="year-value">2025/26</span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

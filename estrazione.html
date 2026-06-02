@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrazione SPARQL - Barry Lyndon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <button id="menu-toggle" class="menu-btn" aria-label="Apri Menu">
+            <div class="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+            <span class="menu-text">MENÙ</span>
+        </button>
+    </header>
+
+    <div id="side-menu" class="side-nav">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="il-progetto.html">Il Progetto</a></li>
+                <li><a href="metodologia.html">Metodologia</a></li>
+                <li><a href="estrazione.html">Estrazione dati con SPARQL</a></li>
+                <li><a href="lacune.html">Individuazione Lacune</a></li>
+                <li><a href="migliorie.html">Migliorie Proposte</a></li>
+                <li><a href="llm.html">LLM - Prompt e Confronti</a></li>
+                <li><a href="conclusioni.html">Sfide Affrontate</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="menu-overlay" class="overlay"></div>
+
+    <main class="editorial-page">
+        
+        <div class="title-banner fade-on-scroll">
+            <img src="img/img3.jpg" class="banner-img" alt="Visualizzazione dati SPARQL">
+            <div class="banner-overlay">
+                <span class="label banner-label">CAPITOLO 03</span>
+                <h1 class="banner-title">Estrazione dati con  SPARQL</h1>
+            </div>
+        </div>
+
+        <div class="notes-wrapper">
+            
+            <div class="notes-text-center fade-on-scroll">
+                <span class="label" style="text-align: center; display: block; margin-bottom: 20px;">INTRODUZIONE TECNICA</span>
+                
+                <p class="synopsis-text lead-text justified-intro">
+                    Questa sezione documenta la prima fase del nostro lavoro, dedicata all'estrazione preliminare dei dati di Barry Lyndon tramite SPARQL. Prima di mappare le lacune, l'obiettivo è stato quello di analizzare l'architettura dei metadati esistenti su Wikidata, prendendo confidenza con l'endpoint risolvendo numerose sfida da noi proposte:
+                </p>
+
+                <div class="prefix-box">
+                    <h3 class="prefix-box-title">PREMESSA: I Namespace Fondamentali</h3>
+                    <p class="synopsis-text">
+                        L'interfaccia web di Wikidata Query Service ha una comoda funzione di autocompletamento che gestisce i prefissi comuni dietro le quinte. Tuttavia, per garantire il massimo rigore metodologico nella nostra analisi formale, abbiamo scelto di esplicitare sempre i namespace fondamentali all'inizio di ogni interrogazione.
+                    </p>
+                    <ul class="prefix-list">
+                        <li>
+                            <strong>PREFIX wd:</strong> <code>&lt;http://www.wikidata.org/entity/&gt;</code><br>
+                            Utilizzato per identificare le entità fisiche o concettuali (es. il film Barry Lyndon o il regista Stanley Kubrick).
+                        </li>
+                        <li>
+                            <strong>PREFIX wdt:</strong> <code>&lt;http://www.wikidata.org/prop/direct/&gt;</code><br>
+                            Utilizzato per dichiarare le proprietà dirette che creano relazioni tra le entità (es. "regista", "data di pubblicazione").
+                        </li>
+                        <li>
+                            <strong>PREFIX rdfs:</strong> <code>&lt;http://www.w3.org/2000/01/rdf-schema#&gt;</code><br>
+                            Il vocabolario base di RDF Schema, indispensabile per estrarre le <em>label</em> (etichette testuali) leggibili dall'uomo al posto dei codici alfanumerici.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">QUERY 1</span>
+                    <h2 class="notes-heading">Identificazione del film e euristica REGEX</h2>
+                    <p class="synopsis-text">
+                        Il primo passo è l'identificazione univoca della risorsa. Abbiamo utilizzato una scansione sulle label testuali del grafo per trovare il codice identificativo <strong>wd:Q471716</strong>.
+                    </p>
+                    
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>SELECT DISTINCT ?film ?label
+WHERE {
+  ?film wdt:P31 wd:Q11424 ;           # È un film
+        rdfs:label ?label .
+  FILTER(REGEX(?label, "Barry Lyndon", "i")) 
+} LIMIT 10</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="1">ESEGUI QUERY 1 <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-1" class="results-box"><p class="results-placeholder">I risultati appariranno qui...</p></div>
+                    </div>
+
+                    <div class="analysis-box">
+                        <span class="label">ANALISI DEI RISULTATI</span>
+                        <p class="synopsis-text">
+                            La query restituisce un elenco di label in diverse lingue.  quindi per restringere il campo dovrei usare un FILTER(LANG(?label) = "en"), ma la ricerca risulterebbe molto lenta in quanto il motore SPARQL in questo caso cercherebbe di scansionare miliardi di triple rdfs:label per trovare tutte quelle che contengono "Barry Lyndon" e poi controllare se sono in inglese, abbiamo quindi optato per un cambio di strategia per la ricerca.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="notes-grid inverted fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">QUERY 2</span>
+                    <h2 class="notes-heading">Ottimizzazione e dati di regia</h2>
+                    <p class="synopsis-text">
+                        Per velocizzare la ricerca, abbiamo sostituito la scansione REGEX con il legame diretto (BIND) all'identificativo trovato, estraendo contemporaneamente i metadati su regista e data di pubblicazione.
+                    </p>
+                    
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>SELECT DISTINCT ?film ?label ?registaLabel ?dataPubblicazione
+WHERE {
+  BIND(wd:Q471716 AS ?film) 
+  ?film rdfs:label ?label . FILTER(LANG(?label) = "en")
+  OPTIONAL {
+    ?film wdt:P57 ?regista .
+    ?regista rdfs:label ?registaLabel . FILTER(LANG(?registaLabel) = "en")
+  }
+  OPTIONAL { ?film wdt:P577 ?dataPubblicazione . }
+} ORDER BY ?dataPubblicazione</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="2">ESEGUI QUERY 2 <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-2" class="results-box"><p class="results-placeholder">I risultati appariranno qui...</p></div>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <span class="label">ANALISI DEI RISULTATI</span>
+                        <p class="synopsis-text">                    
+ Questa query è istantanea. L'uso di <code>OPTIONAL</code> garantisce la restituzione del record anche in caso di mancanza di una specifica proprietà, mentre il filtro <code>LANG</code> pulisce il risultato dai duplicati linguistici. In questo caso la query ci restituiste un elenco di film duplicati in quanto la data di pubblicazione è multipla.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">QUERY 3A</span>
+                    <h2 class="notes-heading">Mappatura dei Riconoscimenti tramite Blocco VALUES</h2>
+                    <p class="synopsis-text">
+                        In questo primo approccio, utilizziamo la clausola <code>VALUES</code> per assegnare in modo esplicito e inline le etichette testuali alle proprietà del grafo di Wikidata. Associamo rigidamente la proprietà dei premi ricevuti (<code>wdt:P166</code>) allo stato "Vinto" e la proprietà delle candidature (<code>wdt:P1411</code>) allo stato "Nomination".
+                    </p>
+                    
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>PREFIX wd: &lt;http://www.wikidata.org/entity/&gt;
+PREFIX wdt: &lt;http://www.wikidata.org/prop/direct/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT DISTINCT ?stato ?premioLabel
+WHERE {
+  # Assegnazione inline stabili di proprietà e stati
+  VALUES (?proprieta ?stato) {
+    (wdt:P166  "Vinto")
+    (wdt:P1411 "Nomination")
+  }
+
+  # Interrogazione dei premi legati a Barry Lyndon (Q471716)
+  wd:Q471716 ?proprieta ?premio .
+  
+  # Recupero dell'etichetta del premio
+  ?premio rdfs:label ?premioLabel .
+  FILTER(LANG(?premioLabel) = "en")
+}
+ORDER BY ?stato</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="3a">ESEGUI QUERY 3A <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-3a" class="results-box"><p class="results-placeholder">I risultati appariranno qui...</p></div>
+                    </div>
+
+                    <div class="analysis-box">
+                        <span class="label">ANALISI CRITICA DEI RISULTATI</span>
+                        <p class="synopsis-text">
+                            <strong>Il Limite di VALUES:</strong> Sebbene questa query sia strutturalmente lineare, l'output evidenzia un problema logico: il sistema considera "Nomination" e "Vinto" come flussi ed entità del tutto distinte. In questo approccio un premio verrebbe considerato 2 volte se ha vinto, in quanto ha ricevuto anche una nomination.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="notes-grid inverted fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">QUERY 3B</span>
+                    <h2 class="notes-heading">Frazione dei Flussi tramite UNION Semplice</h2>
+                    <p class="synopsis-text">
+                        Per superare la rigidità dell'approccio precedente ed evitare la duplicazione forzata dei valori, abbiamo implementato l'operatore <code>UNION</code>. Questo costrutto permette di combinare i pattern di tripla relativi alle vittorie e alle candidature, isolando le ricerche all'interno di blocchi logici distinti.
+                    </p>
+                    
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>PREFIX wd: &lt;http://www.wikidata.org/entity/&gt;
+PREFIX wdt: &lt;http://www.wikidata.org/prop/direct/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT DISTINCT ?stato ?premioLabel
+WHERE {
+  {
+    wd:Q471716 wdt:P166 ?premio . # P166: Premio ricevuto
+  }
+  UNION
+  {
+    wd:Q471716 wdt:P1411 ?premio . # P1411: Candidato a
+  }
+  
+  ?premio rdfs:label ?premioLabel .
+  FILTER(LANG(?premioLabel) = "en")
+}
+ORDER BY ?stato</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="3b">ESEGUI QUERY 3B <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-3b" class="results-box"><p class="results-placeholder">I risultati appariranno qui...</p></div>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <span class="label">ANALISI CRITICA DEI RISULTATI</span>
+                        <p class="synopsis-text">
+                            <strong>L'Isolamento dello Scope:</strong> Eseguendo la query notiamo che la colonna dello stato risulta vuota. In SPARQL, ogni ramo di una <code>UNION</code> è un'unità completamente isolata. Se provassimo a scrivere un'istruzione <code>BIND</code> dentro le singole parentesi graffe per assegnare il testo "Vinto" o "Nomination", quella variabile nascerebbe e morirebbe solo all'interno di quel frammento. Quando la query esce dalla UNION per unire i flussi, perde i riferimenti locali impedendo la creazione di un'etichetta centralizzata.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">QUERY 3C</span>
+                    <h2 class="notes-heading">Logica Condizionale Esterna con BOUND, IF e SAMPLE</h2>
+                    <p class="synopsis-text">
+                        La soluzione definitiva prevede il raddoppiamento delle variabili all'interno dei rami della UNION per marcare l'origine del dato tramite "variabili segnaposto" (<code>?checkVinto</code> e <code>?checkNomination</code>). Spostando la logica condizionale all'esterno del blocco di unione, siamo in grado di mappare gli stati e aggregare i risultati.
+                    </p>
+                    
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>PREFIX wd: &lt;http://www.wikidata.org/entity/&gt;
+PREFIX wdt: &lt;http://www.wikidata.org/prop/direct/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?premioLabel (SAMPLE(?stato) AS ?statoUnivoco)
+WHERE {
+  {
+    wd:Q471716 wdt:P166 ?premio . 
+    wd:Q471716 wdt:P166 ?checkVinto . 
+  }
+  UNION
+  {
+    wd:Q471716 wdt:P1411 ?premio . 
+    wd:Q471716 wdt:P1411 ?checkNomination . 
+  }
+
+  # Logica condizionale esterna allo scope isolato della UNION
+  BIND(IF(BOUND(?checkVinto), "Vinto", 
+       IF(BOUND(?checkNomination), "Nomination", "Sconosciuto")) AS ?stato)
+
+  ?premio rdfs:label ?premioLabel .
+  FILTER(LANG(?premioLabel) = "en")
+}
+GROUP BY ?premioLabel
+ORDER BY ?statoUnivoco ?premioLabel</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="3c">ESEGUI QUERY 3C <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-3c" class="results-box"><p class="results-placeholder">I risultati appariranno qui...</p></div>
+                    </div>
+
+                    <div class="analysis-box">
+                        <span class="label">ANALISI CRITICA E METODOLOGICA</span>
+                        <p class="synopsis-text" style="margin-bottom: 20px;">
+                            Questo costrutto rappresenta l'ottimizzazione ottimale del flusso semantico. Ecco perché le funzioni lavorano in modo sinergico:
+                        </p>
+                        <div class="synopsis-text">
+                            <ul style="padding-left: 20px; font-size: 1.1rem; line-height: 1.6;">
+                                <li style="margin-bottom: 12px;"><strong>Raddoppiamento delle variabili:</strong> Interroghiamo la proprietà due volte per ramo. La prima istanza mappa l'URI del premio (<code>?premio</code>, comune a tutta la query), la seconda istanza popola una variabile di controllo esclusiva del ramo. Se il film ha vinto un premio, si riempirà <code>?checkVinto</code>; se è una candidatura, si riempirà <code>?checkNomination</code>.</li>
+                                <li style="margin-bottom: 12px;"><strong>Funzione BOUND:</strong> È un operatore booleano esterno che verifica l'effettiva esistenza e valorizzazione di una variabile nel record.</li>
+                                <li style="margin-bottom: 12px;"><strong>Funzione IF:</strong> Se <code>BOUND(?checkVinto)</code> è vero, assegna la stringa personalizzata "Vinto". Se è falso, passa in cascata al controllo successivo. Questo permette di iniettare nel dataset finale etichette testuali pulite e leggibili che non esistono nativamente all'interno del Knowledge Graph.</li>
+                                <li style="margin-bottom: 12px;"><strong>Clausola GROUP BY:</strong> Raggruppa e unifica tutte le righe di dati che condividono la medesima stringa testuale del nome del premio (<code>?premioLabel</code>).</li>
+                                <li style="margin-bottom: 0;"><strong>Funzione di aggregazione SAMPLE:</strong> Poiché Wikidata contiene spesso fonti multiple o triple duplicate per la medesima entità, il raggruppamento collasserebbe i dati generando errori visivi. <code>SAMPLE</code> ordina al motore SPARQL di estrarre un solo campione rappresentativo dello stato per quel gruppo di premi, azzerando i duplicati ridondanti nella tabella.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="notes-grid inverted fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">QUERY 4</span>
+                    <h2 class="notes-heading">Audit Globale delle Proprietà</h2>
+                    <p class="synopsis-text">
+                        L'ultima query esegue una scansione completa di tutte le proprietà associate a Barry Lyndon, filtrando gli identificativi esterni per concentrarsi solo sui dati semantici descrittivi. Inoltre con la clausola SAMPLE, forziamo l'estrazione di un solo esempio rappresentativo, in modo da evitare righe plurime per le proprietà.
+                    </p>
+                    
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>SELECT ?propLabel ?descrizioneProp (SAMPLE(?valoreLabel) AS ?esempio)
+WHERE {
+  wd:Q471716 ?p ?valore .
+  ?prop wikibase:directClaim ?p .
+  ?prop rdfs:label ?propLabel . FILTER(LANG(?propLabel) = "en")
+  OPTIONAL { ?prop schema:description ?descrizioneProp . FILTER(LANG(?descrizioneProp) = "en") }
+  OPTIONAL { ?valore rdfs:label ?valoreLabel . FILTER(LANG(?valoreLabel) = "en") }
+  FILTER(!REGEX(?propLabel, "ID|identifier|identificativo", "i"))
+} GROUP BY ?propLabel ?descrizioneProp ORDER BY ?propLabel</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="4">ESEGUI QUERY 4 <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-4" class="results-box"><p class="results-placeholder">I risultati appariranno qui...</p></div>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <span class="label">ANALISI DEI RISULTATI</span>
+                        <p class="synopsis-text">
+                            Questo audit ci permette di analizzare e valutare eventuali lacune su proprietà considerate da noi rilevanto, ad esempio nonostante le oltre 100 proprietà estratte, nessuna di queste riguarda l'influenza pittorica o le lenti usate. (Questa sezione verrà approfondita successivamente)
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="divider">
+        <div class="pagination-container fade-on-scroll" style="max-width: 1200px; margin: 0 auto; padding: 40px 5%;">
+            <a href="il-progetto.html" class="nav-btn prev-btn">
+                <span class="arrow">&#8592;</span> IL PROGETTO
+            </a>
+            <a href="lacune.html" class="nav-btn next-btn">
+                INDIVIDUAZIONE LACUNE <span class="arrow">&#8594;</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            
+            <div class="footer-col col-names">
+                
+                <img src="img/logo2.png" alt="Logo Università" class="footer-logo">
+                <ul class="footer-list">
+                    <li>Alessandro Miani </li>
+                    <li>Lorenzo Marabese</li>
+                    <li>Ludovico Pio Vicari</li>
+                    <li>Nathaniel Scalabrino</li>
+                </ul>
+                
+                <div class="footer-legal">
+                    QUESTO PROGETTO È STATO REALIZZATO A SCOPO<br>
+                    DIDATTICO PER L'UNIVERSITÀ E NON HA ALCUN<br>
+                    SCOPO DI LUCRO O AFFILIAZIONE COMMERCIALE.
+                </div>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">CORSO DI LAUREA</span>
+                <ul class="footer-list secondary-list">
+                    <li>GOVERNANCE E POLITICHE DELL'INNOVAZIONE DIGITALE</li>
+                </ul>
+                
+                <div class="footer-spacer"></div>
+
+                <span class="footer-label">INSEGNAMENTO</span>
+                <ul class="footer-list secondary-list">
+                    <li>METODOLOGIE E TECNICHE DI SIMULAZIONE</li>
+                </ul>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">IL PROGETTO</span>
+                <p class="footer-text">
+                    Progetto di analisi dell'ontologia di Wikidata, sviluppato con l'obiettivo di mappare e strutturare semanticamente le entità legate all'universo di Barry Lyndon.
+                </p>
+                
+                <div class="year-box">
+                    <span class="year-label">ANNO ACCADEMICO</span>
+                    <span class="year-value">2025/26</span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodologia - Barry Lyndon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <button id="menu-toggle" class="menu-btn" aria-label="Apri Menu">
+            <div class="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+            <span class="menu-text">MENÙ</span>
+        </button>
+    </header>
+
+    <div id="side-menu" class="side-nav">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="il-progetto.html">Il Progetto</a></li>
+                <li><a href="metodologia.html">Metodologia</a></li>
+                <li><a href="estrazione.html">Estrazione dati con SPARQL</a></li>
+                <li><a href="lacune.html">Individuazione Lacune</a></li>
+                <li><a href="migliorie.html">Migliorie Proposte</a></li>
+                <li><a href="llm.html">LLM - Prompt e Confronti</a></li>
+                <li><a href="conclusioni.html">Sfide Affrontate</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="menu-overlay" class="overlay"></div>
+
+    <main class="editorial-page">
+        
+        <div class="title-banner fade-on-scroll">
+            <img src="img/sfondo3.PNG" class="banner-img" alt="Ricerca Metodologica">
+            <div class="banner-overlay">
+                <span class="label banner-label">CAPITOLO 02</span>
+                <h1 class="banner-title">Metodologia</h1>
+            </div>
+        </div>
+
+        <div class="notes-wrapper">
+            
+            <div class="notes-text-center fade-on-scroll">
+                <span class="label" style="text-align: center; display: block; margin-bottom: 20px;">IL NOSTRO PERCORSO METODOLOGICO</span>
+                <p class="synopsis-text lead-text justified-intro">
+                    Per condurre questa ricerca semantica e strutturare l'arricchimento dei dati, abbiamo progettato una pipeline operativa suddivisa in fasi sequenziali. Il protocollo è stato concepito per far dialogare in modo organico il rigore dell'ispezione formale dei grafi RDF con l'euristica e la flessibilità dell'intelligenza artificiale generativa.
+                </p>
+            </div>
+
+            <!-- FOTO GRANDE SOTTO IL TITOLO/INTRO (Centrata e a Colori) -->
+            <div class="fade-on-scroll" style="max-width: 1000px; margin: 0 auto 80px auto; display: flex; flex-direction: column; align-items: center;">
+                <img src="img/schema.png" alt="Flusso di Lavoro" style="width: 55%; height: 550px; object-fit: cover;">
+                <span class="caption" style="display: block; text-align: center; margin-top: 15px; font-size: 0.85rem; color: #666; text-transform: uppercase; letter-spacing: 1px;">Rappresentazione concettuale della pipeline di ricerca</span>
+            </div>
+
+            <div class="notes-text-center fade-on-scroll" style="margin-bottom: 60px;">
+                <h2 class="notes-heading" style="text-align: center; font-size: 2.2rem;">La Pipeline Operativa Passo Dopo Passo</h2>
+            </div>
+
+            <div class="pipeline-container fade-on-scroll">
+                
+                <div class="pipeline-step">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <span class="label">FASE PRELIMINARE</span>
+                        <h3>Focus di Studio & Motivazioni</h3>
+                        <p class="synopsis-text">
+                            Abbiamo selezionato la pietra miliare del cinema <em>Barry Lyndon</em> (1975) per la sua straordinaria natura di "quadro in movimento", un'opera che intreccia indissolubilmente storia dell'arte e pionierismo tecnologico, offrendo il terreno ideale per una sperimentazione semantica complessa.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <span class="label">ANALISI DELL'HUB</span>
+                        <h3>Ispezione del Grafo di Partenza (Wikidata)</h3>
+                        <p class="synopsis-text">
+                            Ci siamo interfacciati con l'endpoint SPARQL di Wikidata per studiare l'infrastruttura ontologica della nostra entità di riferimento. Abbiamo analizzato la gerarchia delle classi associate all'ecosistema cinematografico per comprendere come il database globale descrivesse originariamente la pellicola.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <span class="label">QUERY ENGINEERING</span>
+                        <h3>Sondaggio Strutturale</h3>
+                        <p class="synopsis-text">
+                            Abbiamo ingegnerizzato ed eseguito una serie di interrogazioni SPARQL di controllo (sia <code>SELECT</code> che <code>ASK</code>), implementando combinazioni mirate di operatori complessi. L'uso di <code>REGEX</code> per le stringhe di testo, di <code>UNION</code> per aggregare percorsi informativi alternativi e di logiche condizionali esterne tramite <code>IF</code> e <code>BOUND</code> ci ha permesso di interrogare in sicurezza il server senza causare blocchi o timeout.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <span class="label">ESTRAZIONE LOGICA</span>
+                        <h3>Diagnostica e Mappatura dei Dati</h3>
+                        <p class="synopsis-text">
+                            Abbiamo decodificato i risultati restituiti dalle nostre interrogazioni, valutando criticamente la densità informativa del dataset. Questa fase ha permesso di catalogare i fatti già strutturati, rilevando una netta predominanza di attributi commerciali, distributivi, anagrafici e di cast.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div class="step-number">05</div>
+                    <div class="step-content">
+                        <span class="label">PROVA MATEMATICA</span>
+                        <h3>Isolamento Scientifico dei Gap</h3>
+                        <p class="synopsis-text">
+                            Incrociando l'analisi critica della pellicola e lo studio delle fonti storiografiche con l'esito nullo di specifiche interrogazioni mirate, abbiamo dimostrato logicamente l'esistenza di tre macro-silenzi informativi nel grafo: la frammentazione della colonna sonora, l'assenza di collegamenti ai dipinti ispiratori del Settecento e il vuoto totale di dettagli sul comparto ottico.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div class="step-number">06</div>
+                    <div class="step-content">
+                        <span class="label">ONTOLOGY DESIGN</span>
+                        <h3>Estensione Concettuale del Vocabolario</h3>
+                        <p class="synopsis-text">
+                            Per risolvere l'assenza di una proprietà specifica per la strumentazione fotografica, abbiamo progettato un'estensione concettuale definendo formalmente la proprietà inedita <code>ex:cinematographicLensUsed</code>, associandovi rigorosi vincoli di appartenenza sintattica (<em>Domain</em> impostato sulla classe Film e <em>Range</em> sulla classe Lente).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div class="step-number">07</div>
+                    <div class="step-content">
+                        <span class="label">INTEGRAZIONE IA</span>
+                        <h3>Interrogazione Strategica dei Modelli (Prompting)</h3>
+                        <p class="synopsis-text">
+                            Abbiamo formulato istruzioni strutturate per i modelli linguistici applicando tre distinte metodologie di Prompt Engineering: <em>Zero-shot</em> per l'estrazione fattuale diretta, <em>Few-shot</em> per guidare il formato di output tramite pattern di esempio, e <em>Chain of Thought</em> (CoT) per forzare il modello a scomporre razionalmente i passaggi logici del suo ragionamento.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div class="step-number">08</div>
+                    <div class="step-content">
+                        <span class="label">CROSS-CHECKING</span>
+                        <h3>Verifica Incrociata e Filtro delle Risposte</h3>
+                        <p class="synopsis-text">
+                            Abbiamo sottoposto a severa valutazione comparativa i testi generati da ChatGPT e Gemini, attuando un processo di validazione incrociata basato sui nostri archivi documentali primari (IMDb, cataloghi museali) al fine di eliminare alla radice eventuali imprecisioni o allucinazioni algoritmiche.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div class="step-number">09</div>
+                    <div class="step-content">
+                        <span class="label">SINTASSI RDF</span>
+                        <h3>Codifica e Modellazione delle Triple</h3>
+                        <p class="synopsis-text">
+                            Abbiamo tradotto le informazioni verificate in sintassi Turtle (.ttl). Per i concetti esistenti, abbiamo riutilizzato i predicati standard del web semantico; per i brani musicali e i quadri assenti sul grafo, abbiamo praticato l'<strong>URI-Minting</strong> locale (<code>ex:</code>), ancorando i nuovi nodi a database globali esterni come Wikipedia o MusicBrainz.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div class="step-number">10</div>
+                    <div class="step-content">
+                        <span class="label">GENERAZIONE DINAMICA</span>
+                        <h3>Sintesi del Sotto-Grafo (RDF Generation)</h3>
+                        <p class="synopsis-text">
+                            Abbiamo implementato query SPARQL di tipo <code>CONSTRUCT</code> per forzare l'endpoint a generare attivamente i nuovi blocchi di codice Turtle del nostro progetto, combinando in un unico flusso stabile la definizione dello schema logico della nuova proprietà (TBox) e le relazioni reali storiche del film (ABox).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pipeline-step">
+                    <div class="step-number">11</div>
+                    <div class="step-content">
+                        <span class="label">PUBBLICAZIONE</span>
+                        <h3>Sviluppo della Piattaforma Web</h3>
+                        <p class="synopsis-text" style="margin-bottom: 0;">
+                            Abbiamo ingegnerizzato e strutturato il presente portale web, ospitandolo pubblicamente sull'infrastruttura di GitHub Pages, per esporre in modo chiaro, interattivo e open-source l'intero processo di ricerca, l'audit dei codici SPARQL sviluppati e le triple generate.
+                        </p>
+                    </div>
+                </div>
+
+            </div> </div>
+
+        <hr class="divider" style="margin-top: 80px;">
+        <div class="pagination-container fade-on-scroll" style="max-width: 1200px; margin: 0 auto; padding: 40px 5%;">
+            <a href="il-progetto.html" class="nav-btn prev-btn">
+                <span class="arrow">&#8592;</span> IL PROGETTO
+            </a>
+            <a href="estrazione.html" class="nav-btn next-btn">
+                ESTRAZIONE SPARQL <span class="arrow">&#8594;</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            
+            <div class="footer-col col-names">
+                
+                <img src="img/logo2.png" alt="Logo Università" class="footer-logo">
+                <ul class="footer-list">
+                    <li>Alessandro Miani </li>
+                    <li>Lorenzo Marabese</li>
+                    <li>Ludovico Pio Vicari</li>
+                    <li>Nathaniel Scalabrino</li>
+                </ul>
+                
+                <div class="footer-legal">
+                    QUESTO PROGETTO È STATO REALIZZATO A SCOPO<br>
+                    DIDATTICO PER L'UNIVERSITÀ E NON HA ALCUN<br>
+                    SCOPO DI LUCRO O AFFILIAZIONE COMMERCIALE.
+                </div>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">CORSO DI LAUREA</span>
+                <ul class="footer-list secondary-list">
+                    <li>GOVERNANCE E POLITICHE DELL'INNOVAZIONE DIGITALE</li>
+                </ul>
+                
+                <div class="footer-spacer"></div>
+
+                <span class="footer-label">INSEGNAMENTO</span>
+                <ul class="footer-list secondary-list">
+                    <li>METODOLOGIE E TECNICHE DI SIMULAZIONE</li>
+                </ul>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">IL PROGETTO</span>
+                <p class="footer-text">
+                    Progetto di analisi dell'ontologia di Wikidata, sviluppato con l'obiettivo di mappare e strutturare semanticamente le entità legate all'universo di Barry Lyndon.
+                </p>
+                
+                <div class="year-box">
+                    <span class="year-label">ANNO ACCADEMICO</span>
+                    <span class="year-value">2025/26</span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modellazione e Arricchimento - Barry Lyndon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <button id="menu-toggle" class="menu-btn" aria-label="Apri Menu">
+            <div class="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+            <span class="menu-text">MENÙ</span>
+        </button>
+    </header>
+
+    <div id="side-menu" class="side-nav">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="il-progetto.html">Il Progetto</a></li>
+                <li><a href="metodologia.html">Metodologia</a></li>
+                <li><a href="estrazione.html">Estrazione dati con SPARQL</a></li>
+                <li><a href="lacune.html">Individuazione Lacune</a></li>
+                <li><a href="migliorie.html">Migliorie Proposte</a></li>
+                <li><a href="llm.html">LLM - Prompt e Confronti</a></li>
+                <li><a href="conclusioni.html">Sfide Affrontate</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="menu-overlay" class="overlay"></div>
+
+    <main class="editorial-page">
+        
+        <div class="title-banner fade-on-scroll">
+            <img src="img/sfondo5.png" class="banner-img" alt="Arricchimento del Grafo Semantico">
+            <div class="banner-overlay">
+                <span class="label banner-label">CAPITOLO 05</span>
+                <h1 class="banner-title">Modellazione e Arricchimento</h1>
+            </div>
+        </div>
+
+        <div class="notes-wrapper">
+            
+            <div class="notes-text-center fade-on-scroll">
+                <span class="label" style="text-align: center; display: block; margin-bottom: 20px;">INTRODUZIONE</span>
+                <p class="synopsis-text lead-text justified-intro">
+                    L’analisi preliminare condotta tramite l'endpoint SPARQL di Wikidata ha confermato l'esistenza di un profondo divario informativo (gap semantico). Sebbene l'hub di Linked Data descriva accuratamente Barry Lyndon come prodotto industriale e commerciale, l'interrogazione del grafo ha dimostrato l'assenza totale di connessioni strutturate verso il suo reale patrimonio artistico e tecnologico. Questo limite oggettivo ha legittimato la necessità di passare alla fase successiva di modellazione autonoma e arricchimento del grafo.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">ARRICCHIMENTO 1</span>
+                    <h2 class="notes-heading">Generazione Prima Tripla: Entità Musicali</h2>
+                    <p class="synopsis-text">
+                        La nostra prima operazione è stata quella di collegare le entità musicali (trovate su <a href="https://www.imdb.com/it/title/tt0072684/soundtrack/">IMDB</a>) usando la proprietà "theme music" (wdt:P942) che abbiamo usato in precedenza per cercare le colonne sonore usate. Prima di tutto cerchiamo le entità mancanti nel knowledge graph di Wikidata.
+                    </p>
+                    
+                    <p class="synopsis-text">
+                        Da una prima ricerca notiamo come non tutte le entità siano presenti. Per queste presenti possiamo direttamente collegare il film tramite la proprietà <code>"theme music"</code> all'entità. Per quelle non esistenti invece, possiamo pensare sia di proporre effettivamente le creazione su wikidata, sia utilizzare un link di esempio per il solo fine del nostro progetto. Abbiamo dunque optiato per la seconda opzione, creando localmente le entità e adottando il prefisso <code>@prefix ex: &lt;http://example.org/barrylyndon/soundtrack/&gt;</code> collegandole a link esterni.
+                    </p>
+
+                    <span class="label" style="margin-top: 30px;">FILE TURTLE DELLA PRIMA GENERAZIONE DI TRIPLE</span>
+                    <div style="background-color: #fcfcfc; border-left: 2px solid #000; padding: 20px; margin-top: 15px; margin-bottom: 20px;">
+                        <p class="synopsis-text" style="font-size: 1.1rem; margin-bottom: 0;">
+                            <strong>Nota strutturale:</strong> Questo frammento in sintassi Turtle (.ttl) materializza la nostra strategia ibrida. Nella prima parte, il film viene connesso alle risorse musicali già censite su Wikidata. Nella seconda, applichiamo l'<strong>URI-Minting</strong>: le entità mancanti vengono generate localmente con il prefisso <code>ex:</code>, dotate di un'etichetta testuale (<code>rdfs:label</code>) e saldamente ancorate al Web Semantico globale tramite link identificativi esterni (<code>rdfs:seeAlso</code>).
+                        </p>
+                    </div>
+                    <div class="turtle-code-box">
+<pre><code>@prefix wd: &lt;http://www.wikidata.org/entity/&gt; .
+@prefix wdt: &lt;http://www.wikidata.org/prop/direct/&gt; .
+@prefix ex: &lt;http://example.org/barrylyndon/soundtrack/&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+
+# SOGGETTO CENTRALE: Barry Lyndon (wd:Q471716)
+# PREDICATO STANDARD: theme music (wdt:P942)
+
+# --- 1. ENTITÀ ESISTENTI SU WIKIDATA ---
+wd:Q471716 wdt:P942 wd:Q1660217 .      # Schubert - Piano Trio in E-flat
+wd:Q471716 wdt:P942 wd:Q124151832 .    # Vivaldi - Cello Concerto in E minor
+wd:Q471716 wdt:P942 wd:Q11915173 .     # Bach - Concerto for 2 Harpsichords
+wd:Q471716 wdt:P942 wd:Q723559 .       # Mozart - Idomeneo (Marcia)
+wd:Q471716 wdt:P942 wd:Q127058368 .    # Tradizionale - The British Grenadiers
+wd:Q471716 wdt:P942 wd:Q1434350 .      # Tradizionale - Lilliburlero
+wd:Q471716 wdt:P942 wd:Q7423184 .      # Händel - Sarabande
+
+# --- 2. ENTITÀ MANCANTI (Create localmente con Link Esterni) ---
+
+# Schubert - German Dance No.1 in C major
+wd:Q471716 wdt:P942 ex:schubertGermanDanceNo1 .
+ex:schubertGermanDanceNo1 rdfs:label "German Dance No.1 in C major (Schubert)"@en ;
+                          rdfs:seeAlso &lt;https://en.wikipedia.org/wiki/List_of_compositions_by_Franz_Schubert&gt; .
+
+# Federico il Grande - Hohenfriedberger March
+wd:Q471716 wdt:P942 ex:hohenfriedbergerMarch .
+ex:hohenfriedbergerMarch rdfs:label "Hohenfriedberger March (Frederick the Great)"@en ;
+                         rdfs:seeAlso &lt;https://en.wikipedia.org/wiki/Hohenfriedberger_Marsch&gt; .
+
+# Seán Ó Riada - Tin Whistles & Women of Ireland
+wd:Q471716 wdt:P942 ex:womenOfIreland .
+ex:womenOfIreland rdfs:label "Women of Ireland / Tin Whistles (Seán Ó Riada)"@en ;
+                  rdfs:seeAlso &lt;https://musicbrainz.org/work/4b6ba989-1dfb-4028-98e6-778fe76d0b57&gt; .
+
+# The Chieftains - The Sea Maiden
+wd:Q471716 wdt:P942 ex:theSeaMaiden .
+ex:theSeaMaiden rdfs:label "The Sea Maiden (The Chieftains)"@en ;
+                rdfs:seeAlso &lt;https://www.tunefind.com/song/the-chieftains/the-sea-maiden&gt; .</code></pre>
+                    </div>
+                
+                    <span class="label" style="margin-top: 40px;">GENERAZIONE SOTTO-GRAFO (ENTITÀ REALI)</span>
+                    
+                    <div style="background-color: #fcfcfc; border-left: 2px solid #000; padding: 20px; margin-top: 15px; margin-bottom: 20px;">
+                        <p class="synopsis-text" style="font-size: 1.1rem; margin-bottom: 0;">
+                            <strong>Operazione logica:</strong> Questa query utilizza il costrutto <code>CONSTRUCT</code> per aggregare in un sotto-grafo RDF temporaneo le sole entità musicali già censite su Wikidata. Attraverso il blocco <code>VALUES</code>, il motore SPARQL non effettua ricerche cieche ma "inietta" direttamente i codici Q dei brani, generando istantaneamente le triple relative al film (Soggetto), alla proprietà <em>theme music</em> (Predicato) e alle tracce (Oggetto).
+                        </p>
+                    </div>
+
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>PREFIX wd: &lt;http://www.wikidata.org/entity/&gt;
+PREFIX wdt: &lt;http://www.wikidata.org/prop/direct/&gt;
+
+CONSTRUCT {
+  # Lo schema Turtle che VERRA' GENERATO nell'output
+  wd:Q471716 wdt:P942 ?brano .
+}
+WHERE {
+  # Iniettiamo i dati reali trovati nella tua documentazione
+  VALUES ?brano {
+    wd:Q1660217    # Schubert - Piano Trio in E-flat major, Op. 100
+    wd:Q124151832  # Vivaldi - Cello Concerto in E minor (RV 409)
+    wd:Q11915173   # Bach - Concerto for 2 Harpsichords in C minor
+    wd:Q723559     # Mozart - Idomeneo (Marcia)
+    wd:Q127058368  # Tradizionale - The British Grenadiers
+    wd:Q1434350    # Tradizionale - Lilliburlero
+    wd:Q7423184    # Händel - Sarabande (Suite in D minor)
+  }
+}</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="miglioria1a">ESEGUI CONSTRUCT (ENTITÀ ESISTENTI) <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-miglioria1a" class="results-box"><p class="results-placeholder">Risultati...</p></div>
+                    </div>
+
+
+                    <span class="label" style="margin-top: 40px;">GENERAZIONE SOTTO-GRAFO (URI-MINTING LOCALE)</span>
+                    
+                    <div style="background-color: #fcfcfc; border-left: 2px solid #000; padding: 20px; margin-top: 15px; margin-bottom: 20px;">
+                        <p class="synopsis-text" style="font-size: 1.1rem; margin-bottom: 0;">
+                            <strong>Operazione logica:</strong> Per formalizzare l'arricchimento teorico delle tracce assenti nel grafo centralizzato, questa query modella ex-novo la struttura di rete delle entità locali (prefisso <code>ex:</code>). Il costrutto non si limita a legare il film al brano, ma "costruisce" (CONSTRUCT) per ciascun ID locale sia la sua etichetta testuale (<code>rdfs:label</code>) sia il puntatore logico verso i database esterni di autorità (<code>rdfs:seeAlso</code>).
+                        </p>
+                    </div>
+
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>PREFIX wd: &lt;http://www.wikidata.org/entity/&gt;
+PREFIX wdt: &lt;http://www.wikidata.org/prop/direct/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX ex: &lt;http://example.org/barrylyndon/soundtrack/&gt;
+
+CONSTRUCT {
+  # 1. Colleghiamo Barry Lyndon all'ID locale del brano
+  wd:Q471716 wdt:P942 ?idBrano .
+  
+  # 2. Assegniamo il titolo leggibile all'entità locale
+  ?idBrano rdfs:label ?titoloBrano .
+  
+  # 3. Colleghiamo l'entità locale al suo link di riferimento esterno
+  ?idBrano rdfs:seeAlso ?linkEsterno .
+}
+WHERE {
+  # Mappiamo i dati dei brani assenti su Wikidata
+  VALUES (?idBrano ?titoloBrano ?linkEsterno) {
+    (ex:schubertGermanDanceNo1 "German Dance No.1 in C major (Schubert)"@en  &lt;https://en.wikipedia.org/wiki/List_of_compositions_by_Franz_Schubert&gt;)
+    (ex:hohenfriedbergerMarch  "Hohenfriedberger March (Frederick the Great)"@en &lt;https://en.wikipedia.org/wiki/Hohenfriedberger_Marsch&gt;)
+    (ex:womenOfIreland         "Women of Ireland / Tin Whistles (Seán Ó Riada)"@en &lt;https://tin-whistle.music-tabs.com/music-sheet/women_of_ireland_sean_o_riada&gt;)
+    (ex:theSeaMaiden           "The Sea Maiden (The Chieftains)"@en          &lt;https://www.tunefind.com/song/the-chieftains/the-sea-maiden&gt;)
+  }
+}</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="miglioria1b">ESEGUI CONSTRUCT (ENTITÀ MANCANTI) <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-miglioria1b" class="results-box"><p class="results-placeholder">Risultati...</p></div>
+                    </div>
+
+                    <div class="analysis-box">
+                        <span class="label">SPIEGAZIONE DEL RISULTATO</span>
+                        <p class="synopsis-text">
+                            Quando eseguiamo una query <code>CONSTRUCT</code> sull'endpoint SPARQL di Wikidata, l'interfaccia non si comporta come quando viene usata una <code>SELECT</code>. Il risultato di un CONSTRUCT è a tutti gli effetti un nuovo grafo RDF generato sul momento (che rimane temporaneo in quanto non vado direttamente a modificare il knowledge graph). In questi risultati vedremo le colonne allineate in Soggetto, Predicato e Oggetto.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="notes-grid inverted fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">ARRICCHIMENTO 2</span>
+                    <h2 class="notes-heading">Ispezione delle Proprietà e Influenze Artistiche</h2>
+                    <p class="synopsis-text">
+                        Cerco la proprietà idonea per le ispirazioni artistiche. Quindi cerco in generale se esiste la proprietà su Wikidata interrogando l'intero database.
+                    </p>
+                    
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>PREFIX wikibase: &lt;http://wikiba.se/ontology#&gt;
+PREFIX bd: &lt;http://www.wikidata.org/prop/direct/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT DISTINCT ?prop ?propLabel ?desc
+WHERE {
+  ?prop a wikibase:Property .
+  ?prop rdfs:label ?propLabel .
+  ?prop schema:description ?desc .
+  
+  # REGEX per trovare proprietà artistiche
+  FILTER(REGEX(?propLabel, "inspired|painting|artistic|depicts", "i"))
+  FILTER(LANG(?propLabel) = "en")
+  FILTER(LANG(?desc) = "en")
+}
+LIMIT 50</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="miglioria2a">CERCA PROPRIETÀ ARTISTICHE <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-miglioria2a" class="results-box"><p class="results-placeholder">Risultati...</p></div>
+                    </div>
+
+                    <p class="synopsis-text" style="margin-top: 30px;">
+                        Noto come "Inspired by" è buona, indago, cerco se alcuni film sono ispirati da quadri, ED EFFETTIVAMENTE È COSÌ, posso usare la proprietà:
+                    </p>
+
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>PREFIX wd: &lt;http://www.wikidata.org/entity/&gt;
+PREFIX wdt: &lt;http://www.wikidata.org/prop/direct/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT DISTINCT ?filmLabel ?quadroLabel
+WHERE {
+  ?film wdt:P31 wd:Q11424 .      # L'entità è un film (ma potrei anche fare senza)
+  ?film wdt:P941 ?quadro .       # Il film è ispirato da qualcosa...
+  
+  # Quel "qualcosa" deve essere un dipinto (Q3305213) 
+  # o un'opera d'arte (Q838948)
+  ?quadro wdt:P31 wd:Q3305213 . 
+  
+  ?film rdfs:label ?filmLabel .
+  ?quadro rdfs:label ?quadroLabel .
+  
+  FILTER(LANG(?filmLabel) = "en")
+  FILTER(LANG(?quadroLabel) = "en")
+}
+LIMIT 20</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="miglioria2b">VERIFICA USO DELLA PROPRIETÀ <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-miglioria2b" class="results-box"><p class="results-placeholder">Risultati...</p></div>
+                    </div>
+
+                    <p class="synopsis-text" style="margin-top: 30px;">
+                        Il risultato è buono, questa proprietà è già stata usata per le ispirazioni in altri film. Posso dunque generare alcune triple per arricchire l'ontologia con i dipinti di riferimento. Chiedo a Chat e Gemini i dipinti usati, ed ecco i risultati:
+                    </p>
+
+                    <div class="art-cards-container">
+                        <div class="art-card">
+                            <strong>"The Blue Boy" (Thomas Gainsborough)</strong>
+                            <p>Ha ispirato i costumi e il portamento del giovane Barry.</p>
+                        </div>
+                        <div class="art-card">
+                            <strong>"The Graham Children" (William Hogarth)</strong>
+                            <p>Ha ispirato la composizione visiva e la staticità delle scene con i bambini.</p>
+                        </div>
+                        <div class="art-card">
+                            <strong>"Marriage A-la-Mode" (William Hogarth)</strong>
+                            <p>L'intera serie di dipinti è la fonte principale per le scene di accoppiamento, scommesse e decadimento morale della nobiltà.</p>
+                        </div>
+                        <div class="art-card">
+                            <strong>"An Election Entertainment" (William Hogarth)</strong>
+                            <p>Ha ispirato le scene caotiche e sature delle locande e dei soldati.</p>
+                        </div>
+                        <div class="art-card">
+                            <strong>"Lady Alston" (Thomas Gainsborough)</strong>
+                            <p>Ha ispirato l'estetica, le acconciature e l'illuminazione dei ritratti di Lady Lyndon.</p>
+                        </div>
+                    </div>
+
+                    <span class="label" style="margin-top: 30px;">INIZIAMO L'ARRICCHIMENTO CON IL FILE TTL</span>
+                    <div class="turtle-code-box">
+<pre><code>@prefix wd: &lt;http://www.wikidata.org/entity/&gt; .
+@prefix wdt: &lt;http://www.wikidata.org/prop/direct/&gt; .
+@prefix ex: &lt;http://example.org/barrylyndon/art/&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+
+# SOGGETTO CENTRALE: Barry Lyndon (wd:Q471716)
+# PREDICATO STANDARD: inspired by (wdt:P941)
+
+wd:Q471716 wdt:P941 wd:Q604761 .       # Gainsborough - The Blue Boy (Q604761)
+wd:Q471716 wdt:P941 wd:Q3451328 .      # Hogarth - The Graham Children (Q3451328)
+wd:Q471716 wdt:P941 wd:Q5220868 .      # Hogarth - Marriage A-la-Mode (Ciclo di quadri Q5220868)
+wd:Q471716 wdt:P941 wd:Q66970124 .     # Hogarth - An Election Entertainment (Dipinto singolo custodito al Soane's Museum)
+wd:Q471716 wdt:P941 wd:Q18937352 .     # Gainsborough - Lady Alston</code></pre>
+                    </div>
+
+                    <span class="label" style="margin-top: 40px;">MAPPATURA DEL GRAFO DELLE INFLUENZE VISIVE</span>
+                    
+                    <div style="background-color: #fcfcfc; border-left: 2px solid #000; padding: 20px; margin-top: 15px; margin-bottom: 20px;">
+                        <p class="synopsis-text" style="font-size: 1.1rem; margin-bottom: 0;">
+                            <strong>Operazione logica:</strong> Questa query simula l'effettivo arricchimento semantico delle influenze visive del film sfruttando il predicato standard validato <code>wdt:P941</code> (inspired by). Il costrutto mappa stabilmente l'opera di Kubrick a ciascuno dei 5 capolavori della pittura settecentesca identificati durante la nostra ricerca documentale, traducendo un'influenza puramente critica in una relazione formale di Linked Data.
+                        </p>
+                    </div>
+
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>PREFIX wd: &lt;http://www.wikidata.org/entity/&gt;
+PREFIX wdt: &lt;http://www.wikidata.org/prop/direct/&gt;
+
+CONSTRUCT {
+  # Schema di generazione del sotto-grafo in formato Turtle
+  wd:Q471716 wdt:P941 ?quadro .
+}
+WHERE {
+  # Definizione esplicita degli ID reali estratti dalla tua documentazione
+  VALUES ?quadro {
+    wd:Q604761    # Gainsborough - The Blue Boy
+    wd:Q3451328   # Hogarth - The Graham Children
+    wd:Q5220868   # Hogarth - Marriage A-la-Mode
+    wd:Q66970124  # Hogarth - An Election Entertainment
+    wd:Q18937352  # Gainsborough - Lady Alston
+  }
+}</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="miglioria2c">ESEGUI CONSTRUCT (QUADRI) <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-miglioria2c" class="results-box"><p class="results-placeholder">Risultati...</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">ARRICCHIMENTO 3</span>
+                    <h2 class="notes-heading">Ampliamento Ontologia e Estensione Schema (Lenti)</h2>
+                    <p class="synopsis-text">
+                        Cerco la proprietà per ampliare, cerco in tutto il database Wikidata, ma non viene mai menzionata la telecamera usata per registrare i film, l'unico risultato che incrocia "camera/lens" con film nella descrizione è questo:
+                    </p>
+                    
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>PREFIX wikibase: &lt;http://wikiba.se/ontology#&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX schema: &lt;http://schema.org/&gt;
+PREFIX p: &lt;http://www.wikidata.org/prop/&gt;
+
+SELECT DISTINCT ?property ?propertyLabel ?description
+WHERE {
+  ?property a wikibase:Property .
+  ?property rdfs:label ?propertyLabel .
+  ?property schema:description ?description .
+  
+  # FILTRO 1: La descrizione o la label devono contenere "camera" o "lens"
+  FILTER(REGEX(?propertyLabel, "camera|lens", "i") || REGEX(?description, "camera|lens", "i"))
+  
+  # FILTRO 2: Restringiamo alle proprietà che menzionano "film", "movie" o "cinema" 
+  # nella descrizione, così scartiamo quelle per microscopi o satelliti.
+  FILTER(REGEX(?description, "film|movie|cinema|motion picture", "i"))
+
+  FILTER(LANG(?propertyLabel) = "en")
+  FILTER(LANG(?description) = "en")
+}
+ORDER BY ?propertyLabel</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="miglioria3a">CERCA PROPRIETÀ OTTICA <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-miglioria3a" class="results-box"><p class="results-placeholder">Risultati...</p></div>
+                    </div>
+
+                    <p class="synopsis-text" style="margin-top: 30px;">
+                        Dato che non è sufficiente, posso pensare di creare una proprietà, e poi aggiungere la tupla. Potrei ampliare l'ontologia creando questa proprietà. QUESTO È IN FORMATO TURTLE:
+                    </p>
+
+                    <div class="turtle-code-box">
+<pre><code>@prefix ex: &lt;http://example.org/ontologyprogetto/estensione/&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix wd: &lt;http://www.wikidata.org/entity/&gt; .
+
+# Definizione della nuova proprietà
+ex:cinematographicLensUsed a rdf:Property ;
+    rdfs:label "cinematographic lens used"@en ;
+    rdfs:comment "The specific lens model used to achieve the visual style of a motion picture."@en ;
+    rdfs:domain wd:Q11424 ;  # Si applica ai Film
+    rdfs:range wd:Q109672300 .  # Il valore deve essere una lente
+
+
+# E aggiungo la tupla della mia lente
+@prefix wd: &lt;http://www.wikidata.org/entity/&gt; .
+@prefix ex: &lt;http://example.org/ontologyprogetto/estensione/&gt; .
+
+# La nostra nuova tupla di arricchimento
+wd:Q471716 ex:cinematographicLensUsed wd:Q4035883 .</code></pre>
+                    </div>
+
+                    <span class="label" style="margin-top: 40px;">ECCO LA STESSA QUERY SPARQL USANDO IL CONSTRUCT</span>
+                    
+                    <div style="background-color: #fcfcfc; border-left: 2px solid #000; padding: 20px; margin-top: 15px; margin-bottom: 20px;">
+                        <p class="synopsis-text" style="font-size: 1.1rem; margin-bottom: 0;">
+                            <strong>Operazione logica:</strong> Questa query rappresenta l'estensione più complessa in quanto opera su due livelli del Web Semantico. Nel primo blocco del <code>CONSTRUCT</code> genera la **TBox** (lo schema), definendo da zero i vincoli formali, le etichette e le descrizioni della nuova proprietà <code>ex:cinematographicLensUsed</code>. Nel secondo blocco, genera contestualmente l'**ABox** (l'asserzione sul dato), connettendo fisicamente il film alla lente NASA reale. Il <code>WHERE</code> usa una costante fissa per forzare l'esecuzione immediata dell'intero grafo senza dipendere da dati preesistenti.
+                        </p>
+                    </div>
+
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>PREFIX wd: &lt;http://www.wikidata.org/entity/&gt;
+PREFIX wdt: &lt;http://www.wikidata.org/prop/direct/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX ex: &lt;http://example.org/ontologyprogetto/estensione/&gt;
+
+CONSTRUCT {
+  # --- 1. DEFINIZIONE DELLA NUOVA PROPRIETÀ ---
+  ex:cinematographicLensUsed a rdf:Property ;
+                             rdfs:label "cinematographic lens used"@en ;
+                             rdfs:comment "The specific lens model used to achieve the visual style of a motion picture."@en ;
+                             rdfs:domain wd:Q11424 ;      # Classe Film
+                             rdfs:range wd:Q109672300 .   # Classe Lente
+
+  # --- 2. TRIPLA DI ARRICCHIMENTO ---
+  wd:Q471716 ex:cinematographicLensUsed wd:Q4035883 .
+}
+WHERE {
+  # Usiamo un blocco VALUES con un'entità di controllo fissa (il film stesso)
+  # Questo serve a dare una conditione al WHERE per far eseguire la query,
+  # senza dover scansionare o dipendere da dati già esistenti sul grafo.
+  VALUES ?film { wd:Q471716 }
+}</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="miglioria3b">ESEGUI CONSTRUCT (LENTI) <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-miglioria3b" class="results-box"><p class="results-placeholder">Risultati...</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider" style="margin-top: 80px;">
+            <div class="notes-text-center fade-on-scroll" style="margin-top: 60px; margin-bottom: 40px;">
+                <span class="label">CONCLUSIONE SEZIONE</span>
+                <p class="synopsis-text justified-intro" style="font-size: 1.2rem; margin-top: 20px;">
+                    Questa sezione documenta il processo di estensione del grafo di conoscenza volto a colmare le tre lacune individuate (lenti cinematografiche, colonna sonora e ispirazioni pittoriche). Per farlo, abbiamo adottato una strategia di modellazione ibrida che opera su due livelli:
+                </p>
+                <div class="synopsis-text" style="text-align: justify;">
+                    <ul style="padding-left: 20px; font-size: 1.15rem; line-height: 1.6;">
+                        <li style="margin-bottom: 15px;"><strong>Vocabolari Standard e Nuovi Predicati:</strong> Laddove il vocabolario di Wikidata offriva già proprietà semanticamente corrette (come wdt:P942 per la musica e wdt:P941 per l'arte), ne abbiamo riutilizzato la struttura. Di fronte alla mancanza di una proprietà per l'ottica, abbiamo invece progettato un'estensione teorica creando da zero il predicato ex:cinematographicLensUsed (con definizione di Domain e Range).</li>
+                        <li style="margin-bottom: 15px;"><strong>Identità Reali e Uri-Minting:</strong> Per la generazione delle triple in sintassi Turtle, abbiamo collegato il film alle entità già esistenti sul Web Semantico (i codici Q dei dipinti e di parte dei brani). Per le risorse assenti, abbiamo praticato l'Uri-Minting, coniando nuovi identificatori locali (ex:) e ancorandoli a database esterni affidabili (Wikipedia, MusicBrainz) tramite la proprietà rdfs:seeAlso.</li>
+                        <li style="margin-bottom: 0;"><strong>Integrazione finale:</strong> Il risultato è un sotto-grafo integrato, generato formalmente attraverso il comando CONSTRUCT, che unisce dinamicamente TBox (lo schema della nuova proprietà) e ABox (i dati reali del film).</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="divider">
+        <div class="pagination-container fade-on-scroll" style="max-width: 1200px; margin: 0 auto; padding: 40px 5%;">
+            <a href="lacune.html" class="nav-btn prev-btn">
+                <span class="arrow">&#8592;</span> INDIVIDUAZIONE LACUNE
+            </a>
+            <a href="llm.html" class="nav-btn next-btn">
+                LLM - PROMPT E CONFRONTI <span class="arrow">&#8594;</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            
+            <div class="footer-col col-names">
+                
+                <img src="img/logo2.png" alt="Logo Università" class="footer-logo">
+                <ul class="footer-list">
+                    <li>Alessandro Miani </li>
+                    <li>Lorenzo Marabese</li>
+                    <li>Ludovico Pio Vicari</li>
+                    <li>Nathaniel Scalabrino</li>
+                </ul>
+                
+                <div class="footer-legal">
+                    QUESTO PROGETTO È STATO REALIZZATO A SCOPO<br>
+                    DIDATTICO PER L'UNIVERSITÀ E NON HA ALCUN<br>
+                    SCOPO DI LUCRO O AFFILIAZIONE COMMERCIALE.
+                </div>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">CORSO DI LAUREA</span>
+                <ul class="footer-list secondary-list">
+                    <li>GOVERNANCE E POLITICHE DELL'INNOVAZIONE DIGITALE</li>
+                </ul>
+                
+                <div class="footer-spacer"></div>
+
+                <span class="footer-label">INSEGNAMENTO</span>
+                <ul class="footer-list secondary-list">
+                    <li>METODOLOGIE E TECNICHE DI SIMULAZIONE</li>
+                </ul>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">IL PROGETTO</span>
+                <p class="footer-text">
+                    Progetto di analisi dell'ontologia di Wikidata, sviluppato con l'obiettivo di mappare e strutturare semanticamente le entità legate all'universo di Barry Lyndon.
+                </p>
+                
+                <div class="year-box">
+                    <span class="year-label">ANNO ACCADEMICO</span>
+                    <span class="year-value">2025/26</span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

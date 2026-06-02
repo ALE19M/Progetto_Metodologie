@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barry Lyndon: Analisi di una Ontologia</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <button id="menu-toggle" class="menu-btn" aria-label="Apri Menu">
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <span class="menu-text">Menù</span>
+        </button>
+    </header>
+
+    <div id="side-menu" class="side-nav">
+        
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="il-progetto.html">Il Progetto</a></li>
+                <li><a href="metodologia.html">Metodologia</a></li>
+                <li><a href="estrazione.html">Estrazione dati con SPARQL</a></li>
+                <li><a href="lacune.html">Individuazione Lacune</a></li>
+                <li><a href="migliorie.html">Migliorie Proposte</a></li>
+                <li><a href="llm.html">LLM - Prompt e Confronti</a></li>
+                <li><a href="conclusioni.html">Sfide Affrontate</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="menu-overlay" class="overlay"></div>
+
+    <section class="hero">
+        <img src="img/logo.png" class="logo-semplice" alt="Logo Università">
+        <img src="img/img4.png" alt="Barry Lyndon Hero">
+        <h1 class="hero-title">Barry Lyndon: un'analisi ontologica</h1>
+    </section>
+
+    <main class="content-wrapper">
+        
+        <div class="info-grid-top">
+            <div class="column-left">
+                <div class="info-block">
+                    <span class="label">CORSO DI LAUREA</span>
+                    <h2 class="value">GEPID</h2>
+                </div>
+                <div class="info-block">
+                    <span class="label">CORSO</span>
+                    <h2 class="value">Metodologie e Tecniche di Simulazione</h2>
+                </div>
+            </div>
+            
+            <div class="column-right">
+                <div class="info-block">
+                    <span class="label">ANNO</span>
+                    <h2 class="value">2025/2026</h2>
+                </div>
+                <div class="info-block">
+                    <span class="label">COMPONENTI DEL GRUPPO</span>
+                    <h2 class="value">Alessandro Miani <br> Lorenzo Marabese <br> Ludovico Pio Vicari <br> Nathaniel Scalabrino</h2>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="info-grid-bottom">
+            <div class="column-left links-column">
+                <div class="links-container">
+                    <a href="#">&#8599; REPOSITORY GITHUB</a>
+                    <a href="#">&#8599; DOCUMENTAZIONE</a>
+                    <a href="#">&#8599; DATASET ONTOLOGIA</a>
+                    <a href="#">&#8599; VISUALIZZAZIONE</a>
+                </div>
+                
+                <div class="left-gallery">
+                    <img src="img/img1.png" alt="1">
+                    <img src="img/img2.png" alt="2">
+                    <img src="img/img3.jpg" alt="3">
+                </div>
+            </div>
+            
+            <div class="column-right text-column">
+                <span class="label">PERCHÉ BARRY LYNDON?</span>
+                <p class="synopsis-text">
+                    Nato da una profonda passione cinematografica, questo progetto si concentra su Barry Lyndon (1975) di Stanley Kubrick, un capolavoro totale che ha rivoluzionato la storia del cinema. Il film è una vera e propria "pittura in movimento": Kubrick ha ricreato l'estetica del Settecento ispirandosi direttamente alle tele di maestri come Gainsborough e Hogarth, e ha superato i limiti tecnologici dell'epoca utilizzando speciali lenti ottiche NASA per girare scene illuminate esclusivamente a lume di candela.
+                </p>
+                <br>
+                <span class="label">IL LIMITE DEI DATI</span>
+                <p class="synopsis-text">
+                    Nonostante l'immenso valore storico dell'opera, l'analisi semantica del grafo di Wikidata ha fatto emergere una forte lacuna: il database descrive accuratamente gli aspetti commerciali e produttivi del film, ma ignora completamente i suoi legami con la storia dell'arte e l'innovazione tecnologica. Mancano, di fatto, le proprietà e le triple necessarie a connettere il film al suo vero patrimonio culturale e tecnico.
+                </p>
+                <br>
+                <span class="label">IL NOSTRO APPROCCIO IN 3 FASI</span>
+                <div class="synopsis-text">
+                    Il sito documenta il flusso di lavoro scientifico e sperimentale adottato per colmare questo vuoto informativo:
+                    <ol>
+                        <li><strong>Ricerca e Audit Semantico (SPARQL & Documentazione):</strong> Abbiamo incrociato lo studio della documentazione storica del film con l'interrogazione formale del grafo di Wikidata. Utilizzando query complesse e filtri avanzati (REGEX), abbiamo mappato il dataset e dimostrato scientificamente l'esatta posizione delle lacune informative (i gap relativi a quadri e lenti).</li>
+                        <li><strong>Estensione Ontologica e Modellazione:</strong> Di fronte ai limiti del vocabolario standard di Wikidata, abbiamo progettato un'estensione teorica dell'ontologia. Abbiamo definito nuove proprietà specializzate per l'ottica e l'arte cinematografica, traducendole nel linguaggio formale del Web Semantico per accogliere le nuove triple RDF.</li>
+                        <li><strong>Estrazione e Validazione con Multi-LLM:</strong> Abbiamo sfruttato la potenza di diversi modelli di Intelligenza Artificiale (LLM) attraverso strategie mirate di Prompt Engineering (Zero-shot, Few-shot, Chain of Thought). I diversi modelli sono stati utilizzati per estrarre le informazioni mancanti dalla documentazione, validarle logicamente e modellarle in triple pulite e pronte per l'arricchimento.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+    <div class="pagination-container single-next">
+        <a href="il-progetto.html" class="nav-btn next-btn">
+            IL PROGETTO <span class="arrow">&#8594;</span>
+        </a>
+    </div>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            
+            <div class="footer-col col-names">
+                
+                <img src="img/logo2.png" alt="Logo Università" class="footer-logo">
+                <ul class="footer-list">
+                    <li>Alessandro Miani </li>
+                    <li>Lorenzo Marabese</li>
+                    <li>Ludovico Pio Vicari</li>
+                    <li>Nathaniel Scalabrino</li>
+                </ul>
+                
+                <div class="footer-legal">
+                    QUESTO PROGETTO È STATO REALIZZATO A SCOPO<br>
+                    DIDATTICO PER L'UNIVERSITÀ E NON HA ALCUN<br>
+                    SCOPO DI LUCRO O AFFILIAZIONE COMMERCIALE.
+                </div>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">CORSO DI LAUREA</span>
+                <ul class="footer-list secondary-list">
+                    <li>GOVERNANCE E POLITICHE DELL'INNOVAZIONE DIGITALE</li>
+                </ul>
+                
+                <div class="footer-spacer"></div>
+
+                <span class="footer-label">INSEGNAMENTO</span>
+                <ul class="footer-list secondary-list">
+                    <li>METODOLOGIE E TECNICHE DI SIMULAZIONE</li>
+                </ul>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">IL PROGETTO</span>
+                <p class="footer-text">
+                    Progetto di analisi dell'ontologia di Wikidata, sviluppato con l'obiettivo di mappare e strutturare semanticamente le entità legate all'universo di Barry Lyndon.
+                </p>
+                
+                <div class="year-box">
+                    <span class="year-label">ANNO ACCADEMICO</span>
+                    <span class="year-value">2025/26</span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

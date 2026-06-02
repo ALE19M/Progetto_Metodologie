@@ -1,0 +1,1261 @@
+/* Reset e Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+/* Header & Menu Button */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0; /* Posizionato a sinistra */
+    width: 100%;
+    padding: 30px 40px;
+    display: flex;
+    justify-content: flex-start; /* Allinea a sinistra */
+    align-items: center;
+    z-index: 1000;
+    mix-blend-mode: difference; /* Rende il menù leggibile sopra l'immagine (diventa bianco/nero a contrasto) */
+}
+
+/* Stile Bottone Menu */
+.menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+    z-index: 1001;
+    font-family: inherit;
+}
+
+.menu-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.hamburger span {
+    display: block;
+    width: 28px;
+    height: 2px;
+    background-color: #fff;
+    transition: 0.3s ease;
+}
+
+/* Menu Animato Attivo - Trasforma in X e cambia colore */
+.menu-btn.active .hamburger span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.menu-btn.active .hamburger span:nth-child(2) {
+    opacity: 0;
+}
+.menu-btn.active .hamburger span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+.menu-close-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    margin-bottom: 60px; /* Spazio tra il bottone e i link */
+    padding: 0;
+}
+
+.x-icon {
+    font-size: 1.5rem;
+    font-weight: 200; /* Icona sottile */
+}
+
+/* Navigazione Laterale (Sidebar Animata da Sinistra) */
+.side-nav {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Partiamo da fuori schermo a sinistra */
+    width: 600px; /* Un po' più largo per ospitare il testo grande */
+    max-width: 100%;
+    height: 100vh;
+    background-color: #000000; /* Sfondo Nero */
+    z-index: 999;
+    padding: 60px 50px;
+    transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.side-nav.open {
+    left: 0;
+}
+
+.side-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Testo Gigante del Menù */
+.side-nav li {
+    margin-bottom: 0px; /* Nessun margine, testi attaccati */
+}
+
+.side-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: clamp(2rem, 5vw, 4rem); /* Testo enorme che si adatta allo schermo */
+    font-weight: 500;
+    line-height: 1.05; /* Interlinea strettissima */
+    letter-spacing: -2px; /* Lettere molto vicine */
+    transition: color 0.3s;
+    display: block;
+}
+
+.side-nav a:hover {
+    color: #555555; /* Diventa grigio al passaggio del mouse */
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.4);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Hero Section (Ridotta all'85% per far intravedere il contenuto sotto) */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 85vh; /* NON a schermo intero */
+    background-color: #111; /* Sfondo scuro temporaneo in caso di caricamento img */
+}
+
+.hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Grande Titolo sull'Immagine */
+.hero-title {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    color: #ffffff;
+    font-size: clamp(3rem, 5vw, 5.5rem); /* Testo grande e responsivo */
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    max-width: 800px;
+    z-index: 10;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Leggera ombra per separarlo dall'immagine */
+}
+
+/* L'immagine di sfondo della Hero */
+.hero-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Contenitore Principale */
+.content-wrapper {
+    max-width: 100%; /* Prima era 1200px */
+    padding: 100px 5%; /* Usa una percentuale per adattarsi ai monitor grandi */
+    margin: 0;
+}
+
+/* Griglia layout */
+.info-grid-top, .info-grid-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 60px; /* Previene che i testi si tocchino stringendo la finestra */
+}
+
+.column-left {
+    width: 25%;
+}
+
+.column-right {
+    width: 70%;
+}
+
+/* Tipografia specifica */
+.label {
+    display: block;
+    font-size: 0.7rem;
+    color: #a0a0a0; /* Grigio chiaro come A24 */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+/* I titoli grandi (I nomi, l'anno, ecc.) */
+.value {
+    font-size: 2.8rem; /* Molto più grande */
+    font-weight: 500;
+    letter-spacing: -1.5px; /* Avvicina le lettere per un effetto più elegante */
+    line-height: 1.15;
+    margin-bottom: 60px;
+    color: #000;
+}
+
+.empty-label-space {
+    padding-top: 22px;
+}
+
+/* Divisore */
+.divider {
+    border: 0;
+    height: 1px;
+    background-color: #eaeaea;
+    margin: 10px 0 50px 0;
+}
+
+/* Parte Inferiore */
+.links-column a {
+    display: block;
+    color: #000;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+.links-column a:hover {
+    text-decoration: underline;
+}
+
+.synopsis-text {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 50px;
+    color: #111;
+    text-align: justify;
+}
+
+.awards-block {
+    margin-top: 30px;
+}
+
+.awards-text {
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+/* Responsive per schermi piccoli */
+@media (max-width: 768px) {
+    .info-grid-top, .info-grid-bottom {
+        flex-direction: column;
+    }
+    .column-left, .column-right {
+        width: 100%;
+    }
+    .side-nav {
+        /* Al posto di left: -100%; usa questo: */
+        left: -120%; 
+    }
+    
+    /* Ricordati che quando si apre deve tornare a 0: */
+    .side-nav.open {
+        left: 0;
+    }
+    .site-header {
+        padding: 20px;
+    }
+    .hero-title {
+        font-size: 2.5rem;
+        bottom: 20px;
+        left: 20px;
+    }
+    .content-wrapper {
+        padding: 40px 20px;
+    }
+}
+
+/* =========================================
+   FOOTER (STILE A24 SCURO)
+   ========================================= */
+
+.site-footer {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 80px 40px 60px 40px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin-top: 60px; /* Spazio dal contenuto precedente */
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px; /* Spazio tra le colonne */
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+}
+
+/* La linea grigia in alto per le colonne 2 e 3 */
+.bordered-col {
+    border-top: 1px solid #333333; 
+    padding-top: 15px;
+}
+
+.footer-label {
+    font-size: 0.65rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    display: block;
+}
+
+.footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-list li {
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.footer-list.secondary-list li {
+    line-height: 1.4; /* Per i titoli dei corsi che vanno a capo */
+}
+
+.footer-spacer {
+    height: 40px; /* Ricrea il vuoto a metà colonna centrale */
+}
+
+.footer-text {
+    font-size: 1rem;
+    line-height: 1.4;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+/* Replicare visivamente l'ingombro del blocco email senza metterci un form vero */
+.year-box {
+    border: 1px solid #333333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    margin-top: auto; /* Lo spinge in basso se c'è spazio */
+}
+
+.year-label {
+    font-size: 0.65rem;
+    color: #888888;
+    letter-spacing: 1px;
+}
+
+.year-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Testo microscopico in basso a sinistra */
+.footer-legal {
+    margin-top: auto; 
+    padding-top: 80px;
+    font-size: 0.55rem;
+    color: #666666;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive per schermi piccoli (si impila tutto) */
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+    
+    .footer-legal {
+        padding-top: 40px;
+        order: 3; /* Spinge il testo legale alla fine di tutto su mobile */
+    }
+    
+    .col-names {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+/* =========================================
+   LOGHI (HEADER E FOOTER)
+   ========================================= */
+
+/* Logo centrato nell'header */
+.header-logo-link {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+    z-index: 1001;
+}
+
+.header-logo {
+    height: 130px; /* Modifica questo valore per ingrandire/rimpicciolire il logo in alto */
+    width: auto;
+    display: block;
+}
+
+/* Logo nella prima colonna del footer */
+.footer-logo {
+    height: 90px; /* Modifica questo valore per ingrandire/rimpicciolire il logo nel footer */
+    width: 90px;
+    margin-bottom: 40px; /* Spazio tra il logo e l'elenco dei nomi */
+    display: block;
+}
+
+/* Responsive per centrare il logo del footer sui dispositivi mobili */
+@media (max-width: 768px) {
+    .content-wrapper {
+        padding: 60px 20px;
+    }
+    
+    .column-left, .column-right {
+        width: 100%;
+    }
+    
+    .value {
+        font-size: 2rem; /* Leggermente ridotto su mobile per non sbordare */
+        margin-bottom: 40px;
+    }
+    
+    .synopsis-text {
+        font-size: 1.15rem;
+    }
+}
+
+.logo-semplice {
+    position: absolute !important;
+    top: 40px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    height: 180px !important; /* Fissa l'altezza */
+    width: auto !important; /* IMPEDISCE che diventi largo quanto lo schermo */
+    max-width: 250px !important; /* Un limite di sicurezza extra */
+    object-fit: contain !important; /* Mantiene le proporzioni perfette */
+    z-index: 1000 !important;
+}
+
+/* =========================================
+   GALLERIA IMMAGINI (COLONNA SINISTRA)
+   ========================================= */
+
+.links-container {
+    margin-bottom: 60px; /* Spazio netto tra i link e la prima immagine */
+}
+
+.left-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Spazio verticale tra un'immagine e l'altra */
+}
+
+.left-gallery img {
+    width: 100%; /* Occupa tutta la larghezza del suo contenitore (il 30% della pagina) */
+    height: auto; /* Mantiene le proporzioni corrette */
+    display: block;
+    
+    /* Effetto A24 opzionale: immagini in scala di grigi che si colorano al passaggio del mouse */
+    filter: grayscale(100%);
+    transition: filter 0.4s ease;
+}
+
+.left-gallery img:hover {
+    filter: grayscale(0%);
+}
+
+/* Specifico per il testo della lista numerata dentro la colonna destra */
+.synopsis-text ol {
+    margin-top: 25px;
+    padding-left: 30px;
+}
+
+.synopsis-text li {
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* =========================================
+   PAGINE INTERNE (LAYOUT EDITORIALE)
+   ========================================= */
+
+.editorial-page {
+    padding-top: 0px; /* Spazio extra in alto per l'header senza foto */
+}
+
+.page-header {
+    margin-bottom: 40px;
+}
+
+.page-title {
+    font-size: 5rem;
+    font-weight: 500;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-top: 10px;
+}
+
+.editorial-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 80px;
+    margin-top: 60px;
+    margin-bottom: 100px;
+}
+
+/* Colonna sinistra con titolo che resta incollato mentre scorri */
+.editorial-left {
+    width: 35%;
+    position: relative;
+}
+
+.sticky-title {
+    position: sticky;
+    top: 150px; 
+    font-size: 2.2rem;
+    line-height: 1.15;
+    font-weight: 500;
+    letter-spacing: -1px;
+    color: #000;
+}
+
+/* Colonna destra col testo (riutilizza le classi già fatte) */
+.editorial-right {
+    width: 60%;
+}
+
+/* Citazione d'impatto */
+.pull-quote {
+    font-size: 2.2rem;
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: -1.5px;
+    margin: 60px 0;
+    color: #000;
+}
+
+/* =========================================
+   BOTTONI PRECEDENTE / SUCCESSIVO
+   ========================================= */
+
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0 60px 0;
+}
+
+.pagination-container.single-next {
+    justify-content: flex-end; /* Sposta il bottone a destra se c'è solo "Next" */
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #000;
+    text-decoration: none;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-btn:hover {
+    color: #888;
+}
+
+.prev-btn:hover {
+    transform: translateX(-8px);
+}
+
+.next-btn:hover {
+    transform: translateX(8px);
+}
+
+.arrow {
+    font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .side-nav {
+        width: 80%; /* Su mobile il menu prende tutto lo schermo */
+        padding: 40px 20px;
+    }
+    .sticky-title {
+        position: static; /* Disattiva lo sticky su mobile */
+        margin-bottom: 30px;
+    }
+}
+
+/* =========================================
+   PAGINA "IL PROGETTO" (STILE A24 NOTES)
+   ========================================= */
+
+/* Il Banner Superiore con il Titolo */
+.title-banner {
+    position: relative;
+    width: 100%;
+    height: 40vh; /* Altezza del rettangolo superiore (modificabile) */
+    background-color: #111;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+.banner-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6); /* Scurisce l'immagine per far leggere il testo */
+}
+
+.banner-overlay {
+    position: relative;
+    z-index: 2;
+    padding: 60px 10%; /* Spazio dai bordi */
+}
+
+.banner-label {
+    color: #ccc; /* Etichetta grigio chiaro */
+    margin-bottom: 10px;
+}
+
+.banner-title {
+    color: #fff;
+    font-size: clamp(4rem, 8vw, 7rem); /* Titolo gigante e responsivo */
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin: 0;
+}
+
+/* Contenitore degli articoli sotto */
+.notes-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 5%;
+}
+
+/* Testo centrale introduttivo */
+.notes-text-center {
+    max-width: 800px;
+    margin: 0 auto 100px auto;
+    text-align: center;
+}
+
+.lead-text {
+    font-size: 1.8rem; /* Più grande del testo normale */
+    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+}
+
+/* Griglia Immagine-Testo (stile scacchiera) */
+.notes-grid {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    margin-bottom: 120px;
+}
+
+.notes-grid.inverted {
+    flex-direction: row-reverse; /* Inverte l'ordine: testo a sx, immagine a dx */
+}
+
+.notes-media {
+    width: 55%; /* L'immagine prende più spazio */
+}
+
+.notes-media img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.notes-text {
+    width: 45%;
+}
+
+.notes-heading {
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 25px;
+}
+
+/* Citazione */
+.notes-quote {
+    max-width: 900px;
+    margin: 0 auto 120px auto;
+}
+
+/* =========================================
+   ANIMAZIONI DI SCORRIMENTO (FADE-IN)
+   ========================================= */
+
+.fade-on-scroll {
+    opacity: 0;
+    transform: translateY(40px); /* Parte leggermente spostato verso il basso */
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.fade-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .title-banner { height: 50vh; }
+    .notes-grid, .notes-grid.inverted {
+        flex-direction: column;
+        gap: 40px;
+        margin-bottom: 80px;
+    }
+    .notes-media, .notes-text {
+        width: 100%;
+    }
+    .notes-text-center { text-align: left; }
+    .lead-text { font-size: 1.4rem; }
+}
+
+/* =========================================
+   SEZIONE STRUMENTI
+   ========================================= */
+
+.tools-section {
+    margin-top: 100px;
+    margin-bottom: 120px;
+    padding: 60px;
+    background-color: #f9f9f9; /* Sfondo leggermente grigio per staccare */
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 60px;
+    margin-top: 50px;
+}
+
+.tool-title {
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+    letter-spacing: -0.5px;
+}
+
+/* =========================================
+   SEZIONE TEAM (I VOLTI)
+   ========================================= */
+
+.team-section {
+    margin-top: 120px;
+    margin-bottom: 60px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colonne della stessa grandezza */
+    gap: 30px;
+}
+
+.team-member {
+    text-align: center;
+}
+
+.member-img-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Forza l'immagine a essere un quadrato perfetto */
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: #eee;
+}
+
+.member-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%); /* Trasforma le foto in bianco e nero (stile A24) */
+    transition: filter 0.4s ease;
+}
+
+.member-img-wrapper:hover img {
+    filter: grayscale(0%); /* Torna a colori se ci passi sopra col mouse */
+}
+
+.member-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    color: #000;
+}
+
+/* Responsive per le nuove sezioni */
+@media (max-width: 1024px) {
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr); /* Su tablet le facce diventano 2 sopra e 2 sotto */
+        gap: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .tools-section {
+        padding: 40px 20px;
+    }
+    .tools-grid {
+        grid-template-columns: 1fr; /* Su telefono gli strumenti si impilano */
+    }
+    .team-grid {
+        grid-template-columns: 1fr; /* Su telefono le facce si impilano una sull'altra */
+    }
+}
+
+/* =========================================
+   INTEGRAZIONE SPARQL WIKIDATA
+   ========================================= */
+
+.sparql-container {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Il box contenente il testo della query */
+.query-code-box {
+    background-color: #111111;
+    color: #00ff66; /* Verde stile terminale, molto leggibile sul nero */
+    font-family: 'Courier New', Courier, monospace;
+    padding: 25px;
+    border-radius: 0px;
+    overflow-x: auto;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Bottone esegui query */
+.sparql-btn {
+    align-self: flex-start;
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #000000;
+    padding: 15px 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.sparql-btn:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Il mini box dei risultati */
+.results-box {
+    border: 1px solid #eaeaea;
+    background-color: #fffff9;
+    min-height: 150px;
+    max-height: 400px; /* Evita che si allunghi all'infinito, crea una barra di scorrimento interna */
+    overflow-y: auto;
+    padding: 25px;
+    font-size: 1.1rem;
+}
+
+.results-placeholder {
+    color: #888888;
+    font-style: italic;
+}
+
+/* Stile per l'eventuale tabella dei risultati generata */
+.sparql-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    text-align: left;
+}
+
+.sparql-table th, .sparql-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.sparql-table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: #666;
+    letter-spacing: 0.5px;
+}
+
+.analysis-box {
+    margin-top: 30px;
+    padding: 30px;
+    background-color: #fcfcfc;
+    border-left: 2px solid #000;
+}
+
+.analysis-box .synopsis-text {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+    text-align: justify;
+}
+
+/* =========================================
+   SELEZIONE TESTO (HIGHLIGHT PERSONALIZZATO)
+   ========================================= */
+
+/* Cambia il colore di selezione del testo in tutto il sito */
+::selection {
+    background-color: #000000; /* Sfondo nero */
+    color: #ffffff; /* Testo bianco */
+}
+
+/* Regola specifica per la compatibilità con vecchi browser Firefox */
+::-moz-selection {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* =========================================
+   INTRO E BOX PREFISSI (PAGINA ESTRAZIONE)
+   ========================================= */
+
+/* Testo introduttivo giustificato e più grande */
+.justified-intro {
+    text-align: justify;
+    font-size: 1.85rem; /* Reso ancora più grande e leggibile */
+    line-height: 1.4;
+    margin-bottom: 50px;
+    letter-spacing: -0.5px;
+
+    font-weight: 530; /* Aumenta lo spessore (il normale è 400, il bold è 700) */
+    word-spacing: -4px; /* Riduce sensibilmente lo spazio tra una parola e l'altra */
+    letter-spacing: -0.5px; /* Avvicina leggermente anche le singole lettere */
+}
+
+/* Box dei prefissi in stile editoriale */
+.prefix-box {
+    background-color: #f9f9f9;
+    border-left: 3px solid #000000;
+    padding: 40px;
+    text-align: left; /* Riporta l'allineamento a sinistra per l'elenco */
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+.prefix-box-title {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.prefix-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.prefix-list li {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    color: #222;
+}
+
+.prefix-list li:last-child {
+    margin-bottom: 0;
+}
+
+/* Stile del codice riga dentro il box */
+.prefix-list code {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #ebebeb;
+    padding: 3px 8px;
+    font-size: 1rem;
+    color: #000;
+    border-radius: 2px;
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* Responsive per smartphone */
+@media (max-width: 768px) {
+    .justified-intro {
+        font-size: 1.4rem;
+        text-align: left; /* Su schermi troppo piccoli il giustificato crea troppi spazi bianchi */
+    }
+    .prefix-box {
+        padding: 25px;
+    }
+    .prefix-list code {
+        word-break: break-all; /* Impedisce che il link lungo esca dallo schermo su mobile */
+    }
+}
+
+/* =========================================
+   GALLERIA COMPARATIVA (FRAME VS QUADRO)
+   ========================================= */
+
+.comparison-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.comparison-item {
+    width: 48%; /* Prende quasi metà dello spazio disponibile */
+    display: flex;
+    flex-direction: column;
+}
+
+.comparison-item img {
+    width: 100%;
+    height: 350px; /* Altezza fissa per farle sembrare allineate */
+    object-fit: cover;
+    object-position: top; /* Se taglia, cerca di tenere la testa/parte alta dei soggetti */
+    display: block;
+    margin-bottom: 15px;
+    transition: filter 0.4s ease;
+}
+
+.comparison-item .caption {
+    font-size: 0.8rem;
+    color: #444;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-left: 2px solid #ccc;
+    padding-left: 10px;
+}
+
+/* Responsive per la galleria comparativa */
+@media (max-width: 768px) {
+    .comparison-row {
+        flex-direction: column; /* Le foto si impilano una sotto l'altra su smartphone */
+        gap: 20px;
+    }
+    .comparison-item {
+        width: 100%;
+    }
+    .comparison-item img {
+        height: auto; /* Toglie l'altezza fissa su mobile per non deformare */
+        aspect-ratio: 16 / 9;
+    }
+}
+
+/* =========================================
+   SCHEDE QUADRI & CODICE TURTLE (.TTL)
+   ========================================= */
+
+/* Box specifico per la sintassi Turtle */
+.turtle-code-box {
+    background-color: #1a1a1a;
+    color: #f8f8f2; /* Tonalità di bianco morbido per differenziarsi dallo SPARQL live */
+    font-family: 'Courier New', Courier, monospace;
+    padding: 25px;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border-left: 3px solid #666; /* Linea grigia per denotare file statico */
+}
+
+/* Griglia per le schede dei dipinti */
+.art-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 25px;
+    margin-bottom: 40px;
+}
+
+.art-card {
+    background-color: #fcfcfc;
+    border: 1px solid #eee;
+    padding: 20px;
+    border-left: 2px solid #000;
+}
+
+.art-card strong {
+    font-size: 1.1rem;
+    letter-spacing: -0.5px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.art-card p {
+    font-size: 1.05rem;
+    color: #333;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* =========================================
+   TIMELINE METODOLOGICA (PIPELINE)
+   ========================================= */
+
+.pipeline-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-left: 20px;
+}
+
+.pipeline-step {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 60px;
+    position: relative;
+}
+
+/* La linea verticale che unisce i vari step */
+.pipeline-step::before {
+    content: '';
+    position: absolute;
+    left: 28px; /* Centra la linea sotto il numero */
+    top: 50px;
+    bottom: -60px; /* Collega fino allo step successivo */
+    width: 2px;
+    background-color: #e0e0e0;
+    z-index: 1;
+}
+
+/* Rimuove la linea dall'ultimo step */
+.pipeline-step:last-child::before {
+    display: none;
+}
+
+/* Lo stile dei Grandi Numeri sulla sinistra */
+.step-number {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #cccccc; /* Grigio chiaro per non appesantire */
+    line-height: 1;
+    letter-spacing: -2px;
+    flex-shrink: 0;
+    width: 60px;
+    position: relative;
+    z-index: 2; /* Sta sopra la linea */
+    background-color: #fffff9; /* Stesso colore di sfondo della pagina per nascondere la linea dietro */
+    padding-bottom: 10px;
+}
+
+/* Il contenuto descrittivo di ogni step */
+.step-content {
+    flex-grow: 1;
+    padding-top: 5px;
+}
+
+.step-content .label {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.step-content h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 15px;
+    letter-spacing: -0.5px;
+}
+
+/* Responsive per Smartphone: Nascondi i numeri giganti e la linea se lo schermo è piccolo, mantieni solo i titoli puliti */
+@media (max-width: 768px) {
+    .pipeline-step {
+        gap: 0;
+        flex-direction: column;
+        margin-bottom: 50px;
+    }
+    
+    .pipeline-step::before {
+        display: none;
+    }
+    
+    .step-number {
+        font-size: 1rem;
+        color: #000;
+        margin-bottom: 10px;
+        letter-spacing: 0;
+        width: auto;
+        background: none;
+    }
+    
+    /* Aggiunge "Step" prima del numero su mobile */
+    .step-number::before {
+        content: 'STEP ';
+    }
+}

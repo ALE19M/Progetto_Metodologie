@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Individuazione Lacune - Barry Lyndon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <button id="menu-toggle" class="menu-btn" aria-label="Apri Menu">
+            <div class="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+            <span class="menu-text">MENÙ</span>
+        </button>
+    </header>
+
+    <div id="side-menu" class="side-nav">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="il-progetto.html">Il Progetto</a></li>
+                <li><a href="metodologia.html">Metodologia</a></li>
+                <li><a href="estrazione.html">Estrazione dati con SPARQL</a></li>
+                <li><a href="lacune.html">Individuazione Lacune</a></li>
+                <li><a href="migliorie.html">Migliorie Proposte</a></li>
+                <li><a href="llm.html">LLM - Prompt e Confronti</a></li>
+                <li><a href="conclusioni.html">Sfide Affrontate</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="menu-overlay" class="overlay"></div>
+
+    <main class="editorial-page">
+        
+        <div class="title-banner fade-on-scroll">
+            <img src="img/sfondo4.png" class="banner-img" alt="Ricerca dati">
+            <div class="banner-overlay">
+                <span class="label banner-label">CAPITOLO 04</span>
+                <h1 class="banner-title">I Tre Gap Informativi</h1>
+            </div>
+        </div>
+
+        <div class="notes-wrapper">
+            
+            <div class="notes-text-center fade-on-scroll">
+                <span class="label" style="text-align: center; display: block; margin-bottom: 20px;">DIAGNOSI DEL GRAFO</span>
+                <p class="synopsis-text lead-text justified-intro">
+                    L'analisi precedente condotta sulle proprietà ed entità di Wikidata ci ha permesso di isolare tre macro-aree di insufficienza semantica. Attraverso query mirate, dimostriamo l'assenza o la grave carenza di dati legati all'identità musicale, artistica e tecnologica del film.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">LACUNA 1</span>
+                    <h2 class="notes-heading">L'incompiutezza dell'Identità Musicale</h2>
+                    <p class="synopsis-text">
+                        La prima indagine si concentra sul comparto sonoro. Il film, premio Oscar per la miglior colonna sonora adattata, fa un uso maestoso di brani classici. Abbiamo interrogato il grafo cercando i temi musicali registrati.
+                    </p>
+                    
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>SELECT DISTINCT ?proprieta ?entitaMusicale ?label
+WHERE {
+  # Proprietà P942: Tema musicale
+  wd:Q471716 wdt:P942 ?entitaMusicale . 
+
+  # Recuperiamo la label con il tag di lingua
+  ?entitaMusicale rdfs:label ?label .
+  FILTER(LANG(?label) = "en")
+}
+ORDER BY ?label</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="lacuna1">ESEGUI QUERY (LACUNA 1) <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-lacuna1" class="results-box"><p class="results-placeholder">I risultati appariranno qui...</p></div>
+                    </div>
+
+                    <div class="analysis-box">
+                        <span class="label">ANALISI E AZIONE CORRETTIVA</span>
+                        <p class="synopsis-text">
+                            I dati estratti risultano estremamente limitati, limitandosi a poche menzioni di compositori principali. Incrociando questi dati con <a href="https://www.imdb.com/it/title/tt0072684/soundtrack/" target="_blank" style="color: #333; text-decoration: underline;">fonti esterne accreditate (es. IMDb)</a>, emerge che la colonna sonora reale è ben più vasta e stratificata. Nella fase di modellazione proporremo l'ampliamento di questa rete, collegando esplicitamente le singole composizioni musicali (es. la <em>Sarabanda</em> di Händel) come entità autonome.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="notes-grid inverted fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">LACUNA 2</span>
+                    <h2 class="notes-heading">L'assenza delle Influenze Pittoriche</h2>
+                    <p class="synopsis-text">
+                        Come è noto, la direzione artistica di Kubrick si basa quasi interamente su <em>tableaux vivants</em> ispirati alla pittura del Settecento. Abbiamo interrogato Wikidata cercando proprietà standard che codificassero questa ispirazione (come <em>"inspired by"</em> o <em>"influenced by"</em>).
+                    </p>
+                    
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>PREFIX wd: &lt;http://www.wikidata.org/entity/&gt;
+PREFIX wdt: &lt;http://www.wikidata.org/prop/direct/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT DISTINCT ?proprietaLabel ?collegamentoLabel
+WHERE {
+  # Definiamo le proprietà usate per le influenze artistiche
+  VALUES ?prop { 
+    wdt:P941  # "inspired by"
+    wdt:P737  # "influenced by"
+    wdt:P180  # "depicts"
+  }
+  
+  wd:Q471716 ?prop ?collegamento .
+  
+  ?prop rdfs:label ?proprietaLabel .
+  ?collegamento rdfs:label ?collegamentoLabel .
+  FILTER(LANG(?proprietaLabel) = "en")
+  FILTER(LANG(?collegamentoLabel) = "en")
+}</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="lacuna2">ESEGUI QUERY (LACUNA 2) <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-lacuna2" class="results-box"><p class="results-placeholder">I risultati appariranno qui...</p></div>
+                    </div>
+                    
+                    <div class="analysis-box" style="margin-bottom: 50px;">
+                        <span class="label">ANALISI E AZIONE CORRETTIVA</span>
+                        <p class="synopsis-text">
+                            La query restituisce <strong>zero risultati</strong>. L'intera sovrastruttura estetica del film è invisibile al Web Semantico. Per questo proporremo di collegare i riferimenti cinematografici direttamente ai dipinti storici, strutturando una nuova proprietà o specializzando quelle esistenti.
+                        </p>
+                    </div>
+                    <div class="notes-grid fade-on-scroll" style="margin-top: -30px; margin-bottom: 60px;">
+                        <div class="notes-text" style="width: 100%;">
+                            <h3 class="notes-heading" style="font-size: 1.6rem;">Variante logica: La verifica booleana con ASK</h3>
+                            <p class="synopsis-text">
+                                Un approccio alternativo e computazionalmente più leggero per eseguire l'audit è l'uso della clausola <code>ASK</code>. Invece di richiedere al database di estrarre e formattare una tabella di valori, chiediamo semplicemente: <em>"Esiste almeno una tripla che soddisfa queste condizioni?"</em> Il motore risponderà solo con un valore binario (Vero o Falso).
+                            </p>
+                            
+                            <div class="sparql-container">
+                                <div class="query-code-box">
+<pre><code>PREFIX wd: &lt;http://www.wikidata.org/entity/&gt;
+PREFIX wdt: &lt;http://www.wikidata.org/prop/direct/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+ASK
+WHERE {
+  # 1. Definiamo l'elenco delle proprietà artistiche da controllare
+  VALUES ?prop { 
+    wdt:P941  # inspired by
+    wdt:P737  # influenced by
+    wdt:P180  # depicts
+  }
+  
+  # 2. Verifichiamo se esiste almeno una tripla in cui Barry Lyndon le usa
+  wd:Q471716 ?prop ?collegamento .
+}</code></pre>
+                                </div>
+                                <button class="sparql-btn" data-query-id="lacuna2ask">ESEGUI VERIFICA ASK <span class="btn-arrow">&#8594;</span></button>
+                                <div id="results-lacuna2ask" class="results-box" style="min-height: 100px; display: flex; align-items: center; justify-content: center;"><p class="results-placeholder" style="margin: 0;">Il risultato booleano apparirà qui...</p></div>
+                            </div>
+                            
+                            <div class="analysis-box" style="margin-top: 30px;">
+                                <span class="label">ANALISI DELL'OUTPUT BOOLEANO</span>
+                                <p class="synopsis-text" style="text-align: justify; margin-bottom: 0;">
+                                    Il risultato restituito è un categorico <strong>FALSE</strong>. L'uso di <code>ASK</code> è estremamente sofisticato in fase di diagnosi: consuma pochissime risorse di calcolo sul server di Wikidata ed è perfetto per dimostrare in modo inoppugnabile l'esistenza di una lacuna prima di procedere con la progettazione dell'estensione ontologica.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <span class="label" style="text-align: center; display: block; margin-bottom: 30px;">LA PITTURA IN MOVIMENTO (COMPARAZIONI VISIVE)</span>
+                    <p class="synopsis-text">
+                        Mostriamo dunque successivamente un esempio di frame del film che hanno influenze artistiche (Ispirazioni) da quadri reali, per dimostrare visivamente la nostra proposta di miglioramento, in quanto il regista stesso ha dato molta importanta ai dipinti settecentesci per la realizzazione della sua opera.
+                    </p>
+                    
+                    <div class="comparison-row">
+                        <div class="comparison-item">
+                            <img src="img/q2f.jpg" alt="Frame Barry Lyndon">
+                            <span class="caption">CINEMATOGRAFIA<br>Frame tratto dal film "Barry Lyndon" (1975)</span>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="img/q2.jpg" alt="Dipinto Settecentesco">
+                            <span class="caption">INFLUENZA STORICA<br>“The Blue Boy” by Thomas Gainsborough (1779)</span>
+                        </div>
+                    </div>
+
+                    <div class="comparison-row">
+                        <div class="comparison-item">
+                            <img src="img/q1f.jpg" alt="Frame Barry Lyndon">
+                            <span class="caption">CINEMATOGRAFIA<br>Frame tratto dal film "Barry Lyndon" (1975)</span>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="img/q1.jpg" alt="Dipinto Settecentesco">
+                            <span class="caption">INFLUENZA STORICA<br>“Malvern Hall” by John Constable (1809)</span>
+                        </div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-item">
+                            <img src="img/q3f.jpg" alt="Frame Barry Lyndon">
+                            <span class="caption">CINEMATOGRAFIA<br>Frame tratto dal film "Barry Lyndon" (1975)</span>
+                        </div>
+                        <div class="comparison-item">
+                            <img src="img/q3.jpg" alt="Dipinto Settecentesco">
+                            <span class="caption">INFLUENZA STORICA<br> “The Tête à Tête” by William Hogarth (1743)</span>
+                        </div>
+                    </div>
+                    <p class="footer-legal" style="text-align: right; padding-top: 10px;">
+                        Fonte comparazioni visive: <a href="https://imago.org/committees/education/barry-lyndon-kubrick-s-inspirations/" target="_blank" style="color: #666;">Imago Education</a>
+                    </p>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">LACUNA 3</span>
+                    <h2 class="notes-heading">L'invisibilità dell'Innovazione Tecnologica (Lenti NASA)</h2>
+                    <p class="synopsis-text">
+                        Barry Lyndon ha segnato la storia della tecnica fotografica. Abbiamo interrogato il database per verificare la presenza di dati riguardanti l'uso di fotocamere, aspect ratio o lenti specifiche.
+                    </p>
+                    <p style="margin-bottom: 20px;">La query utilizza un triplo livello di astrazione:</p>
+                            <ul style="padding-left: 20px; font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px;">
+                                <li><code>wikibase:directClaim</code> fa da "ponte" permettendoci di estrarre e leggere in chiaro le definizioni delle singole proprietà (es. convertendo <em>P2061</em> nel testo <em>"aspect ratio"</em>). Senza questo setaccio, otterremmo una tabella illeggibile di codici.</li>
+                                <li>La funzione <code>REGEX</code> fa da "radar": analizza il nome in chiaro delle proprietà trovate trattenendo solo quelle che contengono chiavi tecniche (es. "lens", "camera").</li>
+                                <li>Il parametro <code>"i"</code> rende il radar flessibile (case-insensitive), catturando indistintamente maiuscole e minuscole.</li>
+                            </ul>
+                    </p>
+                    
+                    <div class="sparql-container">
+                        <div class="query-code-box">
+<pre><code>PREFIX wd: &lt;http://www.wikidata.org/entity/&gt;
+PREFIX wdt: &lt;http://www.wikidata.org/prop/direct/&gt;
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+
+SELECT ?prop ?propLabel ?valoreLabel
+WHERE {
+  # 1. Ricerca generale su tutte le proprietà del film
+  wd:Q471716 ?p ?valore .
+  
+  # 2. Collegamento ai metadati della proprietà (il "Ponte")
+  ?prop wikibase:directClaim ?p .
+  ?prop rdfs:label ?propLabel .
+  FILTER(LANG(?propLabel) = "en")
+
+  # 3. Il "Setaccio/Radar": Cerchiamo radici semantiche tecniche
+  FILTER(REGEX(?propLabel, "lens|camera|optical|technique|method|aspect", "i"))
+
+  OPTIONAL {
+    ?valore rdfs:label ?valoreLabel .
+    FILTER(LANG(?valoreLabel) = "en")
+  }
+}</code></pre>
+                        </div>
+                        <button class="sparql-btn" data-query-id="lacuna3">ESEGUI QUERY (LACUNA 3) <span class="btn-arrow">&#8594;</span></button>
+                        <div id="results-lacuna3" class="results-box"><p class="results-placeholder">I risultati appariranno qui...</p></div>
+                    </div>
+
+                    <div class="analysis-box">
+                        <span class="label">ANALISI LOGICA E AZIONE CORRETTIVA</span>
+                        <div class="synopsis-text">           
+                            <p>
+                                <strong>Esito:</strong> L'unico dato che emerge è l'aspect ratio del film, ma non c'è nessun dato relativo alle famose lenti Zeiss f/0.7 della NASA. Di conseguenza, nel capitolo di modellazione proporremo di ampliare l'ontologia per connettere esplicitamente l'opera d'arte allo strumento ottico che l'ha resa possibile.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="divider">
+        <div class="pagination-container fade-on-scroll" style="max-width: 1200px; margin: 0 auto; padding: 40px 5%;">
+            <a href="estrazione.html" class="nav-btn prev-btn">
+                <span class="arrow">&#8592;</span> ESTRAZIONE SPARQL
+            </a>
+            <a href="migliorie.html" class="nav-btn next-btn">
+                MIGLIORIE PROPOSTE <span class="arrow">&#8594;</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            
+            <div class="footer-col col-names">
+                
+                <img src="img/logo2.png" alt="Logo Università" class="footer-logo">
+                <ul class="footer-list">
+                    <li>Alessandro Miani </li>
+                    <li>Lorenzo Marabese</li>
+                    <li>Ludovico Pio Vicari</li>
+                    <li>Nathaniel Scalabrino</li>
+                </ul>
+                
+                <div class="footer-legal">
+                    QUESTO PROGETTO È STATO REALIZZATO A SCOPO<br>
+                    DIDATTICO PER L'UNIVERSITÀ E NON HA ALCUN<br>
+                    SCOPO DI LUCRO O AFFILIAZIONE COMMERCIALE.
+                </div>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">CORSO DI LAUREA</span>
+                <ul class="footer-list secondary-list">
+                    <li>GOVERNANCE E POLITICHE DELL'INNOVAZIONE DIGITALE</li>
+                </ul>
+                
+                <div class="footer-spacer"></div>
+
+                <span class="footer-label">INSEGNAMENTO</span>
+                <ul class="footer-list secondary-list">
+                    <li>METODOLOGIE E TECNICHE DI SIMULAZIONE</li>
+                </ul>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">IL PROGETTO</span>
+                <p class="footer-text">
+                    Progetto di analisi dell'ontologia di Wikidata, sviluppato con l'obiettivo di mappare e strutturare semanticamente le entità legate all'universo di Barry Lyndon.
+                </p>
+                
+                <div class="year-box">
+                    <span class="year-label">ANNO ACCADEMICO</span>
+                    <span class="year-value">2025/26</span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
