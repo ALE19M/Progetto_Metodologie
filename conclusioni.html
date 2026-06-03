@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sfide e Conclusioni - Barry Lyndon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="site-header">
+        <button id="menu-toggle" class="menu-btn" aria-label="Apri Menu">
+            <div class="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+            <span class="menu-text">MENÙ</span>
+        </button>
+    </header>
+
+    <div id="side-menu" class="side-nav">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="il-progetto.html">Il Progetto</a></li>
+                <li><a href="metodologia.html">Metodologia</a></li>
+                <li><a href="estrazione.html">Estrazione dati con SPARQL</a></li>
+                <li><a href="lacune.html">Individuazione Lacune</a></li>
+                <li><a href="migliorie.html">Migliorie Proposte</a></li>
+                <li><a href="llm.html">LLM - Prompt e Confronti</a></li>
+                <li><a href="conclusioni.html">Sfide Affrontate</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="menu-overlay" class="overlay"></div>
+
+    <main class="editorial-page">
+        
+        <div class="title-banner fade-on-scroll">
+            <img src="img/sfondo7.jpg" class="banner-img" alt="Sfide e Conclusioni">
+            <div class="banner-overlay">
+                <span class="label banner-label">CAPITOLO 07</span>
+                <h1 class="banner-title">Sfide e Conclusioni</h1>
+            </div>
+        </div>
+
+        <div class="notes-wrapper">
+            
+            <div class="notes-text-center fade-on-scroll">
+                <span class="label" style="text-align: center; display: block; margin-bottom: 20px;">DIAGNOSTICA DEL PROGETTO</span>
+                <h2 class="notes-heading" style="text-align: center; font-size: 2.5rem;">Sfide Affrontate</h2>
+                <p class="synopsis-text lead-text justified-intro">
+                    Il percorso di ricerca, modellazione e sviluppo del progetto ha affrontato una serie di complessità strutturali, sia di natura storiografica (legata ai dati del film) sia di natura prettamente informatica (legata ai limiti intrinseci del linguaggio SPARQL e dei modelli LLM). Di seguito vengono analizzate, nel dettaglio, tutte le principali sfide riscontrate e le strategie messe in atto per risolverle.
+                </p>
+            </div>
+
+            <hr class="divider">
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">FASE 1</span>
+                    <h2 class="notes-heading">1. Sfide di Partenza e Reperimento dei Dati</h2>
+                    
+                    <p class="synopsis-text" style="margin-top: 20px;">
+                        <strong>L'Individuazione del "Vero" Gap Semantico:</strong> La prima sfida ha riguardato la scelta di un oggetto di studio che non avesse un'esposizione puramente didattica ma che presentasse reali lacune nel Web Semantico. Dopo un'attenta sessione di brainstorming e analisi di gruppo, dove ognuno ha portato le proprie proposte basate sui propri interessi, abbiamo controllato i rispettivi grafi su Wikidata. Abbiamo optato per Barry Lyndon (1975) perché, a fronte di una descrizione commerciale impeccabile, mostrava un vuoto totale sul suo valore storiografico, pittorico e tecnologico.
+                    </p>
+                    <p class="synopsis-text">
+                        <strong>La Frammentazione delle Fonti Analogiche:</strong> Gran parte dei dettagli fondamentali per gli studiosi, come l'uso delle lenti Zeiss fornite dalla NASA, i richiami millimetrici alla pittura di William Hogarth, Thomas Gainsborough e Joshua Reynolds, erano facilmente reperibili nella letteratura cinematografica e nelle fonti specialistiche cartacee, ma risultavano totalmente "sommersi" e invisibili per le macchine, poiché mai tradotti in triple RDF all'interno del grafo globale.
+                    </p>
+                </div>
+            </div>
+
+            <hr class="divider">
+            <div class="notes-grid inverted fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">FASE 2</span>
+                    <h2 class="notes-heading">2. Ostacoli Tecnici nella Scrittura del Codice SPARQL</h2>
+                    <p class="synopsis-text">
+                        L'interrogazione diretta dell'endpoint di Wikidata ha sollevato problematiche complesse di ottimizzazione e logica, risolte solo dopo numerosi tentativi ed errori di sintassi:
+                    </p>
+
+                    <div class="art-cards-container" style="margin-top: 30px;">
+                        <div class="art-card">
+                            <strong>Lentezza Sistematica e Timeout del Server</strong>
+                            <p>Nella primissima query si era tentato di identificare Barry Lyndon tramite testo, utilizzando il costrutto <code>FILTER(REGEX(?label, "Barry Lyndon", "i"))</code> associato a un filtro linguistico. Questa strategia costringeva l'endpoint a scansionare miliardi di triple <code>rdfs:label</code> per trovare le corrispondenze, portando la query al timeout o a caricamenti estenuanti. La criticità è stata superata isolando l'ID esatto del film (wd:Q471716) ed eliminando la ricerca testuale tramite l'istruzione <code>BIND</code>, che assegna staticamente l'entità velocizzando l'esecuzione.</p>
+                        </div>
+                        <div class="art-card">
+                            <strong>Esplosione Combinatoria delle Lingue</strong>
+                            <p>Durante l'estrazione dei registi, delle date di pubblicazione e delle altre proprietà, le etichette venivano restituite in tutte le lingue presenti nel database, generando tabelle ridondanti e duplicati logici per ogni singola riga. Abbiamo dovuto blindare le query applicando rigidamente <code>FILTER(LANG(?label) = "en")</code> e inserendo clausole <code>OPTIONAL</code> per evitare il fallimento dell'intera query in caso di proprietà mancanti, combinando il tutto con la funzione <code>SAMPLE</code> per forzare la visualizzazione di un solo valore campione.</p>
+                        </div>
+                        <div class="art-card">
+                            <strong>Il Fallimento dello Scope nella UNION (Vinto vs Nomination)</strong>
+                            <p>Una delle criticità più bloccanti ha riguardato l'aggregazione dei riconoscimenti. L'uso iniziale di <code>VALUES</code> considerava "Vinto" e "Nomination" come entità distinte, duplicando i record visivi. Nel tentativo di rimediare, abbiamo provato a usare una <code>UNION</code> inserendo la funzione <code>BIND</code> all'interno dei singoli rami grafici. Questo tentativo è fallito sistematicamente: in SPARQL i rami di una UNION sono unità isolate e le variabili dichiarate al loro interno perdono il proprio raggio d'azione (scope) non appena si esce dalla clausola. La soluzione, arrivata dopo molti test, è stata raddoppiare le variabili "segnaposto" (<code>?checkVinto</code> e <code>?checkNomination</code>) all'interno dei rami, spostare la logica condizionale <code>BOUND</code> e <code>IF</code> all'esterno della UNION, e collassare i risultati tramite <code>GROUP BY</code> e <code>SAMPLE</code>.</p>
+                        </div>
+                        <div class="art-card">
+                            <strong>La Decodifica delle Proprietà Tecniche (L'Effetto Radar)</strong>
+                            <p>Quando abbiamo cercato di mappare il comparto fotografico, ci siamo scontrati con l'illeggibilità dei codici numerici di Wikidata (es. P2061). Per risolvere l'ostacolo abbiamo dovuto sfruttare il predicato <code>wikibase:directClaim</code> per convertire i codici in etichette testuali e usare <code>REGEX</code> come un vero e proprio "radar" per filtrare solo i metadati contenenti parole chiave come lens, camera o technique. La query ha confermato che l'unico dato presente era l'aspect ratio, certificando l'assenza totale di riferimenti alle lenti.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+            <div class="notes-grid fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">FASE 3</span>
+                    <h2 class="notes-heading">3. Limiti e Instabilità del Prompt Engineering (Interazione con gli LLM)</h2>
+                    <p class="synopsis-text">
+                        La collaborazione con i modelli linguistici (ChatGPT e Gemini) ha rappresentato la fase più complessa del progetto, caratterizzata da continui blocchi operativi, errori ripetuti e la necessità di inviare prompt simili più volte per correggere l'output:
+                    </p>
+
+                    <div class="art-cards-container" style="margin-top: 30px;">
+                        <div class="art-card">
+                            <strong>L'Allucinazione Sistematica delle Entità</strong>
+                            <p>Durante la generazione automatica delle query e delle triple, i modelli hanno mostrato una forte tendenza a "inventare" letteralmente i codici identificativi di Wikidata (i codici "Q"). Di fronte a brani musicali di nicchia o dipinti minori, l'AI inseriva numeri casuali o generava proprietà inesistenti, costringendo il gruppo a interrompere il flusso per cercare manualmente i codici reali sul browser e iniettarli nei prompt successivi.</p>
+                        </div>
+                        <div class="art-card">
+                            <strong>Incapacità di Risoluzione Logica Autonoma</strong>
+                            <p>Nelle questioni a più alta densità tecnica (come il sopra citato problema dello scope delle variabili nella UNION o la generazione di grafi temporanei tramite CONSTRUCT), i modelli linguistici hanno fallito in modalità zero-shot, proponendo ripetutamente query errate che bloccavano l'endpoint. Per sbloccare la situazione, abbiamo dovuto guidare l'analisi fornendo noi stessi degli esempi reali di sintassi SPARQL già esistenti e funzionanti, usandoli come "addestramento" momentaneo (few-shot) per costringere l'AI a seguire quel preciso pattern strutturale.</p>
+                        </div>
+                        <div class="art-card">
+                            <strong>La "Pigrizia" del Modello e i Troncamenti di Sintassi</strong>
+                            Uno dei motivi di maggiore frustrazione durante lo sviluppo è stata la tendenza dei modelli a soffrire di cali di memoria a lungo termine all'interno della stessa chat. Molto spesso l'AI rispondeva dimenticando di inserire i prefissi (PREFIX) obbligatori, o commettendo errori grossolani nella sintassi delle QUERY(che spesso risultavano non funzionanti se non corrette da noi). È stato dunque necessario strutturare prompt di correzione iterativi ripercorrendo più volte lo stesso passaggio prima di ottenere un codice pulito e funzionante.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+            <div class="notes-grid inverted fade-on-scroll">
+                <div class="notes-text" style="width: 100%;">
+                    <span class="label">FASE 4</span>
+                    <h2 class="notes-heading">4. Assenza di Relazioni Semantiche Dedicate</h2>
+                    <p class="synopsis-text">
+                        L'ultima grande criticità ha riguardato l'incompletezza dell'ontologia di Wikidata rispetto all'analisi filmica avanzata. Molte delle relazioni che gli studiosi considerano cruciali non possiedono proprietà RDF dedicate: non esiste una proprietà che descriva direttamente le fonti pittoriche o le influenze artistiche a livello di singola inquadratura o sequenza, e non esiste una proprietà nel database globale che colleghi un film alla specifica lente cinematografica utilizzata.
+                    </p>
+                    <p class="synopsis-text">
+                        Per colmare questa lacuna, abbiamo dovuto aggirare i limiti del grafo globale operando a livello locale:
+                    </p>
+                    
+                    <ul class="synopsis-text" style="padding-left: 20px;">
+                        <li style="margin-bottom: 15px;"><strong>Uri-Minting e Ancoraggio Esterno:</strong> Per i brani musicali e i quadri assenti dal database, abbiamo coniato identificatori locali (es. <code>ex:womenOfIreland</code>). Per evitare che rimanessero dati isolati e privi di autorevolezza, li abbiamo agganciati semanticamente a pagine Wikipedia o database musicali (MusicBrainz) attraverso la proprietà <code>rdfs:seeAlso</code>.</li>
+                        <li><strong>Modellazione della TBox e della ABox:</strong> Abbiamo progettato un'estensione teorica creando da zero la proprietà <code>ex:cinematographicLensUsed</code>. Mediante una query CONSTRUCT, abbiamo forzato il motore a generare un sotto-grafo integrato che unisce le regole concettuali della proprietà (TBox: stabilendo che il dominio è la classe Film e il range è la classe Lente) con l'istanza reale (ABox: collegando il film alla lente Zeiss della NASA).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider" style="margin-top: 60px;">
+            <div class="notes-text-center fade-on-scroll" style="margin-top: 80px; margin-bottom: 60px;">
+                <span class="label" style="text-align: center; display: block; margin-bottom: 20px;">SINTESI DEL PROGETTO</span>
+                <h1 class="notes-heading" style="text-align: center; font-size: 3rem; letter-spacing: -1.5px;">Conclusioni e Considerazioni Finali</h1>
+                
+                <p class="synopsis-text justified-intro" style="margin-top: 40px;">
+                    Il progetto si conclude con la consapevolezza di aver trasformato un insieme di nozioni storiografiche e cinematografiche "sommerse" in conoscenza formale, strutturata e universalmente accessibile secondo i paradigmi del Web Semantico. L'obiettivo iniziale di colmare il divario informativo attorno a <em>Barry Lyndon</em> è stato pienamente raggiunto: il sotto-grafo generato non solo arricchisce la descrizione del film, ma traccia nuove rotte di collegamento tra l'industria del cinema, la storia dell'arte settecentesca e l'ingegneria ottica.
+                </p>
+                
+                <p class="synopsis-text" style="margin-top: 30px;">
+                    Al di là dei risultati tecnici tangibili, rappresentati dalle triple RDF prodotte e dall'architettura del sito web pubblicato su GitHub Pages, questo lavoro ha costituito un'esperienza formativa di altissimo valore per il nostro gruppo. Affrontare le sfide descritte ci ha permesso di acquisire competenze critiche che vanno ben oltre la semplice memorizzazione dei concetti teorici d'esame.
+                </p>
+
+                <p class="synopsis-text" style="margin-top: 30px;">
+                    In primo luogo, abbiamo compreso il reale significato di interoperabilità dei dati e le rigide necessità sintattiche che governano i Linked Open Data; abbiamo imparato che un singolo errore di punteggiatura o una variabile fuori posto in SPARQL possono invalidare un'intera ricerca, sviluppando così un approccio metodologico rigoroso e una forte attenzione al dettaglio. In secondo luogo, il progetto ci ha offerto una prospettiva estremamente matura e disincantata nei confronti dell'Intelligenza Artificiale Generativa. Scontrarsi ripetutamente con le allucinazioni dei modelli, con i codici inventati e con i fallimenti logici nelle query complesse ci ha insegnato che gli LLM non sono sostituti del pensiero politico e critico, ma potenti amplificatori che richiedono una costante e competente guida umana.
+                </p>
+
+                <p class="synopsis-text" style="margin-top: 30px; font-weight: 500; font-size: 1.6rem; text-align: center; border-top: 2px solid #000; border-bottom: 2px solid #000; padding: 30px 0;">
+                    In sintesi, questo progetto ci ha insegnato che il lavoro del Digital Humanist non consiste nel delegare passivamente la conoscenza alle macchine, ma nel governarle con rigore. Scontrarsi con i limiti dei linguaggi formali e con le imprecisioni dei modelli probabilistici ci ha costretto a sviluppare un approccio fortemente critico, l'unico strumento in grado di trasformare la tecnologia in un mezzo consapevole per salvaguardare, strutturare e connettere la cultura.
+                </p>
+            </div>
+
+        </div> <hr class="divider">
+        <div class="pagination-container fade-on-scroll" style="max-width: 1200px; margin: 0 auto; padding: 40px 5%;">
+            <a href="llm.html" class="nav-btn prev-btn">
+                <span class="arrow">&#8592;</span> LLM - PROMPT E CONFRONTI
+            </a>
+            <a href="index.html" class="nav-btn next-btn">
+                TORNA ALLA HOME <span class="arrow">&#8594;</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            
+            <div class="footer-col col-names">
+                
+                <img src="img/logo2.png" alt="Logo Università" class="footer-logo">
+                <ul class="footer-list">
+                    <li>Alessandro Miani </li>
+                    <li>Lorenzo Marabese</li>
+                    <li>Ludovico Pio Vicari</li>
+                    <li>Nathaniel Scalabrino</li>
+                </ul>
+                
+                <div class="footer-legal">
+                    QUESTO PROGETTO È STATO REALIZZATO A SCOPO<br>
+                    DIDATTICO PER L'UNIVERSITÀ E NON HA ALCUN<br>
+                    SCOPO DI LUCRO O AFFILIAZIONE COMMERCIALE.
+                </div>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">CORSO DI LAUREA</span>
+                <ul class="footer-list secondary-list">
+                    <li>GOVERNANCE E POLITICHE DELL'INNOVAZIONE DIGITALE</li>
+                </ul>
+                
+                <div class="footer-spacer"></div>
+
+                <span class="footer-label">INSEGNAMENTO</span>
+                <ul class="footer-list secondary-list">
+                    <li>METODOLOGIE E TECNICHE DI SIMULAZIONE</li>
+                </ul>
+            </div>
+
+            <div class="footer-col bordered-col">
+                <span class="footer-label">IL PROGETTO</span>
+                <p class="footer-text">
+                    Progetto di analisi dell'ontologia di Wikidata, sviluppato con l'obiettivo di mappare e strutturare semanticamente le entità legate all'universo di Barry Lyndon.
+                </p>
+                
+                <div class="year-box">
+                    <span class="year-label">ANNO ACCADEMICO</span>
+                    <span class="year-value">2025/26</span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
