@@ -111,7 +111,7 @@
                     <div class="chat-bubble ai gemini">
                         <span class="chat-meta">RISPOSTA OTTENUTA</span>
                         Inizialmente, puoi cercare il film usando <code>?film wdt:P31 wd:Q11424</code> (che significa "l'entità è un film") e usare un <code>FILTER(REGEX(?label, "Barry Lyndon", "i"))</code> per filtrare l'etichetta. Questo rivela che l'ID del film è wd:Q471716.<br><br>
-                        Per ottimizzare e non scansionare miliardi di triple, usiamo la funzione Binto: scrivendo <code>BIND(wd:Q471716 AS ?film)</code>, assegniamo in modo statico e istantaneo l'ID noto alla variabile ?film. Da qui, usiamo blocchi OPTIONAL per estrarre in modo sicuro il regista (wdt:P57) e la data (wdt:P577), applicando <code>FILTER(LANG(?label) = "en")</code> per rimuovere i duplicati delle varie lingue.
+                        Per ottimizzare e non scansionare miliardi di triple, usiamo la funzione Bind: scrivendo <code>BIND(wd:Q471716 AS ?film)</code>, assegniamo in modo statico e istantaneo l'ID noto alla variabile ?film. Da qui, usiamo blocchi OPTIONAL per estrarre in modo sicuro il regista (wdt:P57) e la data (wdt:P577), applicando <code>FILTER(LANG(?label) = "en")</code> per rimuovere i duplicati delle varie lingue.
                         <div class="chat-media-box">
                             <img src="llm/foto2.PNG" alt="Screenshot Prompt 1" class="chat-screenshot">
                         </div>
